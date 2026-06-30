@@ -20,33 +20,13 @@ export const metadata: Metadata = {
   description:
     "The Buff provides premium car detailing services including interior detailing, exterior washing, paint correction, compounding, waxing, and protective coating by appointment.",
 
-  keywords: [
-    "The Buff",
-    "car detailing",
-    "auto detailing",
-    "premium car detailing",
-    "interior detailing",
-    "exterior washing",
-    "paint correction",
-    "car waxing",
-    "car coating",
-    "car cleaning service",
-  ],
-
-  authors: [{ name: "The Buff" }],
-  creator: "The Buff",
-  publisher: "The Buff",
-
-  metadataBase: new URL("https://thebuff.vercel.app"),
+  metadataBase: new URL("https://thebuffdetailing.vercel.app"),
 
   openGraph: {
-    title: {
-      default: "The Buff | Premium Car Detailing in Lahore",
-      template: "%s | The Buff",
-    },
+    title: "The Buff | Premium Car Detailing Services",
     description:
-      "The Buff offers premium car detailing in Lahore, including interior detailing, exterior washing, paint correction, waxing, compounding, and protective coating.",
-    url: "https://thebuff.vercel.app",
+      "Refined interior and exterior car detailing, paint correction, waxing, compounding, and protective coating for vehicles that deserve presence.",
+    url: "https://thebuffdetailing.vercel.app",
     siteName: "The Buff",
     images: [
       {
@@ -66,24 +46,6 @@ export const metadata: Metadata = {
     description:
       "Premium car detailing services including interior detailing, exterior washing, paint correction, waxing, and protective coating.",
     images: ["/og-image.jpg"],
-  },
-
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-      "max-video-preview": -1,
-    },
-  },
-
-  icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
   },
 };
 
