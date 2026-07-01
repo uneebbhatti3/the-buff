@@ -73,38 +73,6 @@ const packages = [
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-[#0B0B0B] text-[#F5F2EC]">
-      {/* Header */}
-      <header className="fixed inset-x-0 top-0 z-50 bg-black">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 md:px-8">
-          <Link href={"/"}>
-            <Image src={"/logo.jpg"} alt="The Buff" width={50} height={100} />
-          </Link>
-
-          <nav className="hidden items-center gap-9 text-sm text-zinc-400 md:flex">
-            <a href="#services" className="transition hover:text-[#F5F2EC]">
-              Services
-            </a>
-            <a href="#process" className="transition hover:text-[#F5F2EC]">
-              Process
-            </a>
-            <a href="#packages" className="transition hover:text-[#F5F2EC]">
-              Packages
-            </a>
-            <a href="#contact" className="transition hover:text-[#F5F2EC]">
-              Contact
-            </a>
-          </nav>
-
-          <a
-            href="tel:03214012924"
-            className="hidden items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-sm text-[#F5F2EC] transition hover:border-[#C1121F] hover:text-white md:inline-flex"
-          >
-            Call
-            <ArrowUpRight className="h-4 w-4" />
-          </a>
-        </div>
-      </header>
-
       {/* Hero */}
       <section className="relative min-h-[92vh] overflow-hidden pt-28">
         {/* Background image */}
