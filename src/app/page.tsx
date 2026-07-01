@@ -111,15 +111,13 @@ export default function HomePage() {
             </p>
 
             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <a
-                href="https://wa.me/923214012924"
-                target="_blank"
-                rel="noreferrer"
+              <Link
+                href="/booking"
                 className="inline-flex items-center justify-center gap-3 rounded-full bg-[#F5F2EC] px-7 py-4 text-sm font-semibold uppercase tracking-[0.18em] text-black transition hover:bg-white"
               >
                 Book Appointment
                 <ChevronRight className="h-4 w-4" />
-              </a>
+              </Link>
 
               <a
                 href="#services"
