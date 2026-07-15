@@ -19,18 +19,18 @@ export async function GET(request: NextRequest) {
     .from("bookings")
     .select(
       `
-      id,
-      customer_name,
-      phone,
-      vehicle_name,
-      service_type,
-      notes,
-      booking_date,
-      start_time,
-      end_time,
-      status,
-      created_at
-    `,
+    id,
+    customer_name,
+    phone,
+    vehicle_name,
+    service_types,
+    notes,
+    booking_date,
+    start_time,
+    end_time,
+    status,
+    created_at
+  `,
     )
     .order("booking_date", { ascending: true })
     .order("start_time", { ascending: true });

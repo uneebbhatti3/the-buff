@@ -19,25 +19,17 @@ export default function Header() {
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#0B0B0B]/75 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 md:px-8">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-3">
-          <div className="relative h-12 w-12 overflow-hidden rounded-full border border-white/10 bg-black">
-            <Image
-              src="/logo.jpg"
-              alt="The Buff"
-              fill
-              priority
-              className="object-contain p-1.5"
-            />
-          </div>
-
-          <div className="hidden sm:block">
-            <p className="text-sm font-semibold uppercase tracking-[0.34em] text-[#F5F2EC]">
-              The <span className="text-[#C1121F]">Buff</span>
-            </p>
-            <p className="mt-1 text-[10px] uppercase tracking-[0.32em] text-zinc-500">
-              Detailing & Beyond
-            </p>
-          </div>
+        <Link href="/">
+          <Image
+            src="/logo.svg"
+            alt="The Buff"
+            priority
+            width={100}
+            height={100}
+            // If your SVG is pure vector, consider using 'fill' for full responsiveness,
+            // but for predictable layout and optimization, width and height is recommended.
+            // SVGs provide better scaling and smaller file size vs PNG for logos.
+          />
         </Link>
 
         {/* Desktop Nav */}

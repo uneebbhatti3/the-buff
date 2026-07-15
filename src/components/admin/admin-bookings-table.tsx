@@ -31,7 +31,7 @@ type Booking = {
   customer_name: string;
   phone: string;
   vehicle_name: string | null;
-  service_type: string;
+  service_types: string[];
   notes: string | null;
   booking_date: string;
   start_time: string;
@@ -125,13 +125,28 @@ export default function AdminBookingsTable() {
         },
       },
       {
-        accessorKey: "service_type",
-        header: "Service",
-        cell: ({ row }) => (
-          <span className="text-zinc-300">
-            {formatService(row.original.service_type)}
-          </span>
-        ),
+        accessorKey: "service_types",
+        header: "Services",
+        cell: ({ row }) => {
+          const services = row.original.service_types ?? [];
+
+          return (
+            <div className="flex max-w-xs flex-wrap gap-2">
+              {services.length > 0 ? (
+                services.map((service) => (
+                  <span
+                    key={service}
+                    className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs text-zinc-300"
+                  >
+                    {formatService(service)}
+                  </span>
+                ))
+              ) : (
+                <span className="text-zinc-600">No services</span>
+              )}
+            </div>
+          );
+        },
       },
       {
         accessorKey: "booking_date",
