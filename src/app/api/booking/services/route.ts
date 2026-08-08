@@ -41,6 +41,7 @@ export async function GET() {
         success: false,
         status: 500,
         message: "Unable to fetch services.",
+        debug: error instanceof Error ? error.message : String(error),
       },
       {
         status: 500,
