@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(grep -E \"\\\\.tsx$\")",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(npm install:*)",
+      "Bash(node -e \"const {PrismaNeon} = require\\('@prisma/adapter-neon'\\); console.log\\(PrismaNeon.toString\\(\\).slice\\(0,300\\)\\)\")"
     ]
   }
 }
