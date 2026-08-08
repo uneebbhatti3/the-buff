@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum Weekday {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+model Booking {
+  id              String        @id @default(cuid())
+  fullName        String
+  phone           String
+  vehicle         String
+  bookingDate     DateTime      @db.Date
+  startAt         DateTime
+  endAt           DateTime
+  durationMinutes Int
+  totalPrice      Int
+  notes           String?
+  bookingStatus   BookingStatus @default(PENDING)
+
+  bookingServices BookingService[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([bookingDate])
+  @@index([startAt, endAt])
+  @@index([bookingStatus])
+}
+
+model BookingHours {
+  id       String  @id @default(cuid())
+  weekday  Weekday @unique
+  open     String
+  close    String
+  closed   Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Service {
+  id              String  @id @default(cuid())
+  name            String
+  slug            String  @unique
+  description     String?
+  price           Int
+  durationMinutes Int
+  isActive        Boolean @default(true)
+  displayOrder    Int     @default(0)
+
+  bookingServices BookingService[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isActive])
+  @@index([displayOrder])
+}
+
+model BookingService {
+  id String @id @default(cuid())
+
+  bookingId String
+  serviceId String
+
+  serviceName     String
+  price           Int
+  durationMinutes Int
+
+  booking Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  service Service @relation(fields: [serviceId], references: [id], onDelete: Restrict)
+
+  @@unique([bookingId, serviceId])
+  @@index([bookingId])
+  @@index([serviceId])
+}
+
+model BookingSettings {
+  id                   String @id @default("default")
+  slotIntervalMinutes  Int    @default(30)
+  bufferMinutes        Int    @default(0)
+  bookingWindowDays    Int    @default(90)
+  minimumNoticeMinutes Int    @default(120)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

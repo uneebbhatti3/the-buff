@@ -1,9 +1,51 @@
-import BookingForm from "@/components/booking/booking-form";
+import BookingForm from "@/features/booking/components/booking-form";
+import { Metadata } from "next";
 
-export const metadata = {
-  title: "Book Appointment",
+export const metadata: Metadata = {
+  title: "Book Appointment | The Buff Detailing Lahore",
   description:
-    "Book your car detailing appointment with The Buff. Select a service, choose an available date and time, and submit your appointment request.",
+    "Book your professional car or motorcycle detailing appointment at The Buff in Lahore. Choose from a range of services including paint correction, ceramic coating, interior cleaning, and more. Select your preferred service, date, and time, and enjoy premium vehicle care by expert detailers.",
+  keywords: [
+    "car detailing Lahore",
+    "motorcycle detailing Lahore",
+    "book car appointment Lahore",
+    "book detailing appointment",
+    "ceramic coating Lahore",
+    "interior cleaning",
+    "paint correction",
+    "vehicle detailing booking",
+    "The Buff",
+    "auto detailing appointment",
+  ],
+  openGraph: {
+    title: "Book Appointment | The Buff Detailing Lahore",
+    description:
+      "Schedule your detailing session with The Buff. Select a service, pick an available date, and book car or bike detailing by experts in Lahore.",
+    url: "https://thebuffdetailing.vercel.app/booking",
+    type: "website",
+    images: [
+      {
+        url: "/og-booking.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Book Detailing Appointment at The Buff",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Book Appointment | The Buff Detailing Lahore",
+    description:
+      "Book your car or motorcycle detailing session in Lahore online. Choose a service and time at The Buff for premium care, ceramic coatings, and auto restoration.",
+    images: ["/og-booking.jpg"],
+  },
+  alternates: {
+    canonical: "https://thebuffdetailing.vercel.app/booking",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function BookingPage() {

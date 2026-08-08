@@ -1,0 +1,29 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: the_buff_postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: thebuff_user
+      POSTGRES_PASSWORD: thebuff_password
+      POSTGRES_DB: thebuff_db
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - the_buff_postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U thebuff_user -d thebuff_db"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  the_buff_postgres_data:

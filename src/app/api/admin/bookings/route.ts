@@ -1,52 +1,80 @@
 import { NextRequest, NextResponse } from "next/server";
-import { ADMIN_COOKIE_NAME, verifyAdminSessionToken } from "@/lib/admin-auth";
-import { supabaseAdmin } from "@/lib/supabase-admin";
+import prisma from "@/lib/prisma";
+import { BookingStatus } from "../../../../../generated/prisma/enums";
+
+const VALID_STATUSES = Object.values(BookingStatus);
 
 export async function GET(request: NextRequest) {
-  const sessionToken = request.cookies.get(ADMIN_COOKIE_NAME)?.value;
+  try {
+    const params = request.nextUrl.searchParams;
 
-  if (!verifyAdminSessionToken(sessionToken)) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: "Unauthorized.",
-      },
-      { status: 401 },
+    const page = Math.max(1, parseInt(params.get("page") ?? "1") || 1);
+    const limit = Math.min(
+      100,
+      Math.max(1, parseInt(params.get("limit") ?? "20") || 20),
     );
-  }
+    const statusParam = params.get("status") ?? "";
+    const search = params.get("search")?.trim() ?? "";
+    const sort = params.get("sort") ?? "date_desc";
 
-  const { data, error } = await supabaseAdmin
-    .from("bookings")
-    .select(
-      `
-    id,
-    customer_name,
-    phone,
-    vehicle_name,
-    service_types,
-    notes,
-    booking_date,
-    start_time,
-    end_time,
-    status,
-    created_at
-  `,
-    )
-    .order("booking_date", { ascending: true })
-    .order("start_time", { ascending: true });
+    const status =
+      statusParam && VALID_STATUSES.includes(statusParam as BookingStatus)
+        ? (statusParam as BookingStatus)
+        : undefined;
 
-  if (error) {
+    const where = {
+      ...(status && { bookingStatus: status }),
+      ...(search && {
+        OR: [
+          { fullName: { contains: search, mode: "insensitive" as const } },
+          { phone: { contains: search } },
+          { vehicle: { contains: search, mode: "insensitive" as const } },
+        ],
+      }),
+    };
+
+    const orderBy =
+      sort === "date_asc"
+        ? [{ bookingDate: "asc" as const }, { startAt: "asc" as const }]
+        : [{ bookingDate: "desc" as const }, { startAt: "desc" as const }];
+
+    const skip = (page - 1) * limit;
+
+    const [bookings, total] = await Promise.all([
+      prisma.booking.findMany({
+        where,
+        include: {
+          bookingServices: {
+            select: {
+              id: true,
+              serviceName: true,
+              price: true,
+              durationMinutes: true,
+            },
+          },
+        },
+        orderBy,
+        skip,
+        take: limit,
+      }),
+      prisma.booking.count({ where }),
+    ]);
+
+    const totalPages = Math.ceil(total / limit);
+
+    return NextResponse.json({
+      success: true,
+      bookings,
+      total,
+      page,
+      totalPages,
+    });
+  } catch (error) {
+    console.error("Admin bookings fetch error:", error);
+
     return NextResponse.json(
-      {
-        success: false,
-        message: error.message,
-      },
+      { success: false, message: "Failed to fetch bookings." },
       { status: 500 },
     );
   }
-
-  return NextResponse.json({
-    success: true,
-    data,
-  });
 }

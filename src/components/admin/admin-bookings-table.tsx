@@ -136,7 +136,7 @@ export default function AdminBookingsTable() {
                 services.map((service) => (
                   <span
                     key={service}
-                    className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs text-zinc-300"
+                    className="rounded-full border border-white/10 bg-white/4 px-3 py-1 text-xs text-zinc-300"
                   >
                     {formatService(service)}
                   </span>
@@ -196,7 +196,7 @@ export default function AdminBookingsTable() {
         ),
       },
     ],
-    []
+    [],
   );
 
   const table = useReactTable({
@@ -260,9 +260,9 @@ export default function AdminBookingsTable() {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
                     </TableHead>
                   ))}
                 </TableRow>
@@ -274,7 +274,7 @@ export default function AdminBookingsTable() {
                 table.getRowModel().rows.map((row) => (
                   <TableRow
                     key={row.id}
-                    className="border-white/10 hover:bg-white/[0.03]"
+                    className="border-white/10 hover:bg-white/3"
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell
@@ -283,7 +283,7 @@ export default function AdminBookingsTable() {
                       >
                         {flexRender(
                           cell.column.columnDef.cell,
-                          cell.getContext()
+                          cell.getContext(),
                         )}
                       </TableCell>
                     ))}
