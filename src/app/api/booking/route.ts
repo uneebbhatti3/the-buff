@@ -19,12 +19,9 @@ import {
 } from "@/features/booking/utils/booking-utils";
 
 import { BookingStatus } from "../../../../generated/prisma/enums";
-import {
-  normalisePakistaniPhone,
-  sendWhatsAppMessage,
-} from "@/lib/wasender";
+import { normalisePakistaniPhone, sendWhatsAppMessage } from "@/lib/wasender";
 
-const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
+// const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
 
 type ExistingBooking = {
   startAt: Date;
@@ -42,9 +39,9 @@ function isDateInPast(date: string): boolean {
   return date < getTodayInPakistan();
 }
 
-function getMinimumAllowedDate(): Date {
-  return new Date(Date.now() + 0);
-}
+// function getMinimumAllowedDate(): Date {
+//   return new Date(Date.now() + 0);
+// }
 
 function isTimeConflict(
   candidateStart: Date,

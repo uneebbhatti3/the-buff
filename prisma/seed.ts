@@ -36,14 +36,14 @@ async function seedBusinessHours() {
   const weekdays = Object.values(Weekday);
 
   for (const weekday of weekdays) {
-    await prisma.businessHours.upsert({
+    await prisma.bookingHours.upsert({
       where: { weekday },
       update: {},
       create: {
         weekday,
-        isOpen: true,
-        openingMinutes: 9 * 60, // 09:00
-        closingMinutes: 22 * 60, // 22:00
+        open: "09:00",
+        close: "22:00",
+        closed: false,
       },
     });
   }
