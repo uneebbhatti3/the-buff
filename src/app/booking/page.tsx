@@ -50,26 +50,31 @@ export const metadata: Metadata = {
 
 export default function BookingPage() {
   return (
-    <main className="min-h-screen bg-[#0B0B0B] px-4 pb-20 pt-28 text-[#F5F2EC] sm:px-5 md:px-8">
-      <section className="mx-auto max-w-6xl">
-        <div className="mb-10 max-w-3xl md:mb-14">
-          <p className="text-xs uppercase tracking-[0.28em] text-zinc-500 sm:text-sm">
-            Book an appointment
-          </p>
+    <main className="min-h-screen bg-[#0B0B0B] text-[#F5F2EC]">
+      {/* Page header */}
+      <div className="border-b border-white/8 px-5 py-12 md:px-14">
+        <div className="mx-auto max-w-6xl">
+          <div className="flex items-center gap-3">
+            <span className="h-px w-5 bg-[#C1121F]" />
+            <p className="text-[10px] uppercase tracking-[0.4em] text-zinc-500">
+              Book an appointment
+            </p>
+          </div>
 
-          <h1 className="mt-4 text-4xl font-medium leading-[1.02] tracking-[-0.06em] sm:text-5xl md:text-7xl">
-            Schedule your detailing session.
+          <h1 className="mt-4 text-[clamp(2rem,6vw,4.5rem)] font-medium leading-[0.95] tracking-[-0.05em]">
+            Your next transformation
+            <br />
+            starts here.
           </h1>
-
-          <p className="mt-5 max-w-2xl text-base leading-7 text-zinc-400 sm:text-lg sm:leading-8">
-            Choose your preferred service, select an available date and time,
-            and submit your request. The Buff will contact you to confirm the
-            appointment.
-          </p>
         </div>
+      </div>
 
-        <BookingForm />
-      </section>
+      {/* Form */}
+      <div className="px-5 py-14 md:px-14 md:py-20">
+        <div className="mx-auto max-w-6xl">
+          <BookingForm />
+        </div>
+      </div>
     </main>
   );
 }

@@ -384,7 +384,7 @@ export default function HomePage() {
           <Reveal className="grid gap-4 md:grid-cols-3">
             {packages.map((pkg, index) => {
               const waMessage = encodeURIComponent(
-                `Hi! I'm interested in the *${pkg.name}* package at The Buff Detailing.\n\n${pkg.description}\n\n*What's included:*\n${pkg.items.map((item) => `• ${item}`).join("\n")}\n\nCould you tell me more about this and the pricing?`,
+                `Hi, I'm interested in the *${pkg.name}* package. Could you share the pricing and let me know about availability?`,
               );
               const waHref = `https://wa.me/923004196069?text=${waMessage}`;
               const isHighlighted = index === 1;

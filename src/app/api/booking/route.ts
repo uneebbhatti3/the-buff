@@ -217,7 +217,7 @@ type BookingNotificationData = {
   fullName: string;
   phone: string;
   vehicle: string;
-  serviceNames: string[];
+  services: { name: string; price: number }[];
   startAt: Date;
   endAt: Date;
   durationMinutes: number;
@@ -229,33 +229,59 @@ function formatPKR(amount: number): string {
   return new Intl.NumberFormat("en-PK").format(amount);
 }
 
+function formatDuration(minutes: number): string {
+  const hrs = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  if (hrs > 0 && mins > 0) return `${hrs} hr ${mins} min`;
+  if (hrs > 0) return `${hrs} hr`;
+  return `${mins} min`;
+}
+
 function buildAdminMessage(b: BookingNotificationData): string {
   const slot = formatSlotLabel(b.startAt, b.endAt);
 
   const date = new Intl.DateTimeFormat("en-PK", {
     weekday: "long",
-    year: "numeric",
-    month: "long",
     day: "numeric",
+    month: "long",
+    year: "numeric",
     timeZone: "Asia/Karachi",
   }).format(b.startAt);
 
+  const serviceLines = b.services
+    .map((s) => `  • ${s.name} — Rs. ${formatPKR(s.price)}`)
+    .join("\n");
+
   const lines = [
-    "📋 *New Booking Request*",
+    "🔔 *NEW BOOKING RECEIVED*",
+    "━━━━━━━━━━━━━━━━━━━━━━",
     "",
-    `👤 *Name:* ${b.fullName}`,
-    `📞 *Phone:* ${b.phone}`,
-    `🚗 *Vehicle:* ${b.vehicle}`,
-    `📅 *Date:* ${date}`,
-    `🕐 *Time:* ${slot}`,
-    `🛠 *Services:* ${b.serviceNames.join(", ")}`,
-    `⏱ *Duration:* ${b.durationMinutes} min`,
-    `💰 *Total:* Rs. ${formatPKR(b.totalPrice)}`,
+    "👤 *CLIENT*",
+    `  Name: *${b.fullName}*`,
+    `  Phone: ${b.phone}`,
+    `  Vehicle: ${b.vehicle}`,
+    "",
+    "📅 *APPOINTMENT*",
+    `  Date: *${date}*`,
+    `  Time: *${slot}*`,
+    `  Duration: ${formatDuration(b.durationMinutes)}`,
+    "",
+    "🛠 *SERVICES REQUESTED*",
+    serviceLines,
+    "",
+    "━━━━━━━━━━━━━━━━━━━━━━",
+    `💰 *TOTAL: Rs. ${formatPKR(b.totalPrice)}*`,
+    "━━━━━━━━━━━━━━━━━━━━━━",
   ];
 
   if (b.notes) {
-    lines.push(`📝 *Notes:* ${b.notes}`);
+    lines.push("", "📝 *CLIENT NOTES*", `  _${b.notes}_`);
   }
+
+  lines.push(
+    "",
+    "_Please confirm this appointment with the client as soon as possible._",
+  );
 
   return lines.join("\n");
 }
@@ -265,28 +291,59 @@ function buildUserMessage(b: BookingNotificationData): string {
 
   const date = new Intl.DateTimeFormat("en-PK", {
     weekday: "long",
-    year: "numeric",
-    month: "long",
     day: "numeric",
+    month: "long",
+    year: "numeric",
     timeZone: "Asia/Karachi",
   }).format(b.startAt);
 
-  return [
-    `Hi ${b.fullName}! 👋`,
+  const serviceLines = b.services
+    .map((s) => `  • ${s.name} — Rs. ${formatPKR(s.price)}`)
+    .join("\n");
+
+  const lines = [
+    `Hi *${b.fullName}* 👋`,
     "",
-    "Thank you for booking with *The Buff Detailing*. Your request has been received and is pending confirmation.",
+    "Thank you for choosing *The Buff Detailing*. Your booking request has been received and is currently under review. We will confirm your appointment shortly.",
     "",
-    "📋 *Booking Summary*",
-    `📅 *Date:* ${date}`,
-    `🕐 *Time:* ${slot}`,
-    `🚗 *Vehicle:* ${b.vehicle}`,
-    `🛠 *Services:* ${b.serviceNames.join(", ")}`,
-    `💰 *Total:* Rs. ${formatPKR(b.totalPrice)}`,
+    "━━━━━━━━━━━━━━━━━━━━━━",
+    "📋 *BOOKING SUMMARY*",
+    "━━━━━━━━━━━━━━━━━━━━━━",
     "",
-    "We will contact you shortly to confirm. If you have any questions, feel free to reach out.",
+    "📅 *Date & Time*",
+    `  ${date}`,
+    `  ${slot}`,
     "",
-    "— The Buff Detailing Team",
-  ].join("\n");
+    "🚗 *Vehicle*",
+    `  ${b.vehicle}`,
+    "",
+    "🛠 *Services*",
+    serviceLines,
+    "",
+    "⏱ *Estimated Duration*",
+    `  ${formatDuration(b.durationMinutes)}`,
+    "",
+    "━━━━━━━━━━━━━━━━━━━━━━",
+    `💰 *ESTIMATED TOTAL: Rs. ${formatPKR(b.totalPrice)}*`,
+    "━━━━━━━━━━━━━━━━━━━━━━",
+  ];
+
+  if (b.notes) {
+    lines.push("", "📝 *Your Note*", `  _${b.notes}_`);
+  }
+
+  lines.push(
+    "",
+    "⚠️ _This is a booking *request*, not a confirmed appointment. We will contact you on this number to confirm your slot._",
+    "",
+    "If you have any questions, feel free to reply to this message.",
+    "",
+    "— Ahmad",
+    "*The Buff Detailing*",
+    "📞 0321-4012924",
+  );
+
+  return lines.join("\n");
 }
 
 async function sendBookingNotifications(
@@ -652,7 +709,10 @@ export async function POST(request: NextRequest) {
       fullName: data.fullName,
       phone: data.phone,
       vehicle: data.vehicle,
-      serviceNames: booking.bookingServices.map((s) => s.serviceName),
+      services: booking.bookingServices.map((s) => ({
+        name: s.serviceName,
+        price: s.price,
+      })),
       startAt: booking.startAt,
       endAt: booking.endAt,
       durationMinutes: booking.durationMinutes,

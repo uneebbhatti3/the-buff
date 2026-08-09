@@ -3,7 +3,6 @@
 import {
   ArrowLeft,
   CalendarDays,
-  Car,
   Check,
   Clock3,
   MessageCircle,
@@ -26,22 +25,31 @@ import { Textarea } from "@/components/ui/textarea";
 function formatDuration(minutes: number) {
   const hours = Math.floor(minutes / 60);
   const remainingMinutes = minutes % 60;
-
-  if (hours === 0) {
-    return `${remainingMinutes} minutes`;
-  }
-
-  if (remainingMinutes === 0) {
-    return `${hours} ${hours === 1 ? "hour" : "hours"}`;
-  }
-
-  return `${hours} ${
-    hours === 1 ? "hour" : "hours"
-  } ${remainingMinutes} minutes`;
+  if (hours === 0) return `${remainingMinutes} min`;
+  if (remainingMinutes === 0) return `${hours} hr`;
+  return `${hours} hr ${remainingMinutes} min`;
 }
 
 function formatPrice(price: number) {
   return new Intl.NumberFormat("en-PK").format(price);
+}
+
+function SectionHeader({
+  number,
+  title,
+}: {
+  number: string;
+  title: string;
+}) {
+  return (
+    <div className="mb-6 flex items-center gap-4">
+      <span className="text-[10px] font-medium text-zinc-700">{number}</span>
+      <span className="h-px flex-1 bg-white/8" />
+      <span className="text-[10px] uppercase tracking-[0.32em] text-zinc-500">
+        {title}
+      </span>
+    </div>
+  );
 }
 
 export default function BookingForm() {
@@ -70,220 +78,220 @@ export default function BookingForm() {
     handleOnSubmit,
   } = useCreateBooking();
 
-  const selectedServiceLabels = services
-    .filter((service) => formData.services.includes(service.id))
-    .map((service) => service.name)
-    .join(", ");
-
   const selectedSlot = availableSlots.find(
     (slot) => slot.startTime === formData.startTime,
+  );
+
+  const selectedServices = services.filter((s) =>
+    formData.services.includes(s.id),
   );
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  /*
-   * Customer can book up to one year in advance.
-   * You can later replace this with bookingWindowDays
-   * from your BookingSettings table.
-   */
   const bookingEndDate = new Date(today);
   bookingEndDate.setFullYear(today.getFullYear() + 1);
 
+  /* ── SUCCESS SCREEN ──────────────────────────────────────────────── */
   if (success) {
     return (
-      <div className="overflow-hidden rounded-[2rem] border border-white/8 bg-[#0D0D0D]">
-        <div className="mx-auto flex max-w-2xl flex-col items-center px-6 py-14 text-center sm:px-10 sm:py-20">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full border border-white/15 bg-white/4">
-            <Check className="h-7 w-7 text-[#F5F2EC]" strokeWidth={2} />
-          </div>
+      <div className="flex min-h-[55vh] flex-col items-center justify-center py-20 text-center">
+        <div className="flex h-14 w-14 items-center justify-center rounded-full border border-white/12 bg-white/4">
+          <Check className="h-6 w-6 text-[#F5F2EC]" strokeWidth={1.5} />
+        </div>
 
-          <p className="mt-6 text-[11px] font-medium uppercase tracking-[0.28em] text-zinc-500">
-            Booking request received
-          </p>
+        <p className="mt-8 text-[10px] uppercase tracking-[0.4em] text-zinc-500">
+          Booking Request Received
+        </p>
 
-          <h2 className="mt-4 max-w-xl text-3xl font-medium leading-tight tracking-[-0.04em] text-[#F5F2EC] sm:text-4xl md:text-5xl">
-            Your appointment request has been submitted.
-          </h2>
+        <h2 className="mt-4 max-w-lg text-3xl font-medium leading-[1.08] tracking-[-0.04em] text-[#F5F2EC] sm:text-4xl md:text-5xl">
+          Your appointment has been submitted.
+        </h2>
 
-          <p className="mt-5 max-w-lg text-sm leading-7 text-zinc-400 sm:text-base">
-            Your selected appointment time has been reserved. The Buff will
-            review your request and contact you if any additional information is
-            required.
-          </p>
+        <p className="mt-5 max-w-sm text-sm leading-7 text-zinc-400">
+          Your slot has been reserved. The Buff will review your request and
+          contact you to confirm.
+        </p>
 
-          <div className="mt-9 w-full max-w-md">
-            <a
-              href="https://wa.me/923214012924?text=I%20have%20submitted%20a%20booking%20request%20through%20The%20Buff%20website."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex w-full items-center justify-center gap-2 rounded-full bg-white py-3 text-black transition hover:bg-zinc-100"
+        <div className="mt-10 w-full max-w-xs space-y-3">
+          <a
+            href="https://wa.me/923214012924?text=I%20have%20submitted%20a%20booking%20request%20through%20The%20Buff%20website."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex w-full items-center justify-center gap-2 rounded-full bg-white py-3.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-black transition hover:bg-zinc-100"
+          >
+            <MessageCircle className="h-3.5 w-3.5" />
+            Continue on WhatsApp
+          </a>
+
+          <div className="grid grid-cols-2 gap-3">
+            <Link
+              href="/"
+              className="flex h-12 items-center justify-center gap-2 rounded-full border border-white/10 text-sm text-zinc-400 transition hover:border-white/20 hover:text-white"
             >
-              <MessageCircle className="h-4 w-4" />
-              Continue on WhatsApp
-            </a>
-
-            <div className="mt-3 grid grid-cols-2 gap-3">
-              <Link
-                href="/"
-                className="flex h-12 items-center justify-center gap-2 rounded-full border border-white/10 bg-white/2 px-4 text-sm font-medium text-zinc-300 transition hover:border-white/20 hover:bg-white/5 hover:text-white"
-              >
-                <ArrowLeft className="h-4 w-4" />
-                Back home
-              </Link>
-
-              <button
-                type="button"
-                onClick={() => setSuccess(false)}
-                className="flex h-12 items-center justify-center gap-2 rounded-full border border-white/10 bg-white/2 px-4 text-sm font-medium text-zinc-300 transition hover:border-white/20 hover:bg-white/5 hover:text-white"
-              >
-                <RotateCcw className="h-4 w-4" />
-                Book again
-              </button>
-            </div>
+              <ArrowLeft className="h-3.5 w-3.5" />
+              Home
+            </Link>
+            <button
+              type="button"
+              onClick={() => setSuccess(false)}
+              className="flex h-12 items-center justify-center gap-2 rounded-full border border-white/10 text-sm text-zinc-400 transition hover:border-white/20 hover:text-white"
+            >
+              <RotateCcw className="h-3.5 w-3.5" />
+              Book again
+            </button>
           </div>
+        </div>
 
-          <div className="mt-10 w-full max-w-lg border-t border-white/7 pt-6">
-            <div className="flex items-start justify-center gap-3 text-left">
-              <Clock3 className="mt-0.5 h-4 w-4 shrink-0 text-zinc-600" />
-
-              <div>
-                <p className="text-sm text-zinc-400">
-                  Please keep your phone available.
-                </p>
-
-                <p className="mt-1 text-xs leading-5 text-zinc-600">
-                  The Buff may contact you to verify your vehicle or service
-                  details.
-                </p>
-              </div>
-            </div>
-          </div>
+        <div className="mt-10 flex items-start gap-3 border-t border-white/8 pt-8 text-left">
+          <Clock3 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-zinc-600" />
+          <p className="text-xs leading-5 text-zinc-600">
+            Please keep your phone available. The Buff may contact you to verify
+            your vehicle or service details.
+          </p>
         </div>
       </div>
     );
   }
 
+  /* ── MAIN FORM ───────────────────────────────────────────────────── */
   return (
-    <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-[#111111]">
-      <form onSubmit={handleOnSubmit}>
-        <div className="grid gap-0 lg:grid-cols-[0.95fr_1.05fr]">
-          {/* DATE */}
-          <section className="border-b border-white/10 p-4 sm:p-6 lg:border-r lg:border-b-0 lg:p-8">
-            <div className="mb-6">
-              <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/3">
-                <CalendarDays className="h-5 w-5 text-zinc-300" />
+    <form onSubmit={handleOnSubmit}>
+      <div className="grid gap-16 lg:grid-cols-[1fr_1.15fr] lg:gap-20">
+
+        {/* ── LEFT PANEL: DATE ─────────────────────────────────────── */}
+        <div>
+          <SectionHeader number="01" title="Select Date" />
+
+          {/* Calendar */}
+          <div className="rounded-2xl border border-white/8 bg-[#0D0D0D] p-4 sm:p-5">
+            <Calendar
+              mode="single"
+              selected={formData.bookingDate}
+              onSelect={handleDateChange}
+              disabled={(date) => {
+                const d = new Date(date);
+                d.setHours(0, 0, 0, 0);
+                return d < today || d > bookingEndDate;
+              }}
+              startMonth={today}
+              endMonth={bookingEndDate}
+              defaultMonth={formData.bookingDate ?? today}
+              captionLayout="label"
+              fixedWeeks
+              showOutsideDays
+              className="w-full rounded-none bg-transparent p-0 text-[#F5F2EC]"
+              classNames={{
+                root: "relative w-full bg-transparent text-[#F5F2EC]",
+                months: "w-full",
+                month: "w-full space-y-4",
+                month_caption:
+                  "relative flex h-10 w-full items-center justify-center",
+                caption_label: "text-sm font-medium text-[#F5F2EC]",
+                nav: "absolute inset-x-0 top-0 flex h-10 items-center justify-between",
+                button_previous:
+                  "z-10 flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/3 text-zinc-400 transition hover:border-white/20 hover:text-white",
+                button_next:
+                  "z-10 flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/3 text-zinc-400 transition hover:border-white/20 hover:text-white",
+                month_grid: "w-full border-collapse",
+                weekdays: "grid grid-cols-7",
+                weekday:
+                  "flex h-9 items-center justify-center text-[10px] font-normal uppercase text-zinc-600",
+                weeks: "space-y-1",
+                week: "grid grid-cols-7",
+                day: "relative flex h-10 items-center justify-center text-sm",
+                day_button:
+                  "flex h-9 w-9 items-center justify-center rounded-full text-sm text-[#F5F2EC] transition hover:bg-white/8",
+                selected:
+                  "[&>button]:bg-[#F5F2EC] [&>button]:text-black [&>button:hover]:bg-white [&>button:hover]:text-black",
+                today: "[&>button]:border [&>button]:border-white/25",
+                outside: "opacity-20",
+                disabled:
+                  "opacity-20 [&>button]:pointer-events-none [&>button]:cursor-not-allowed",
+                hidden: "invisible",
+              }}
+            />
+          </div>
+
+          {/* Selected appointment card */}
+          <div className="mt-4 rounded-2xl border border-white/8 bg-[#0D0D0D] px-5 py-4">
+            <p className="text-[10px] uppercase tracking-[0.3em] text-zinc-600">
+              Selected Appointment
+            </p>
+            <p className="mt-3 text-lg font-medium leading-tight tracking-[-0.02em] text-[#F5F2EC]">
+              {formData.bookingDate
+                ? format(formData.bookingDate, "EEEE, MMMM d, yyyy")
+                : "No date selected"}
+            </p>
+            <p className="mt-1 text-sm text-zinc-500">
+              {selectedSlot?.label ?? "No time selected"}
+            </p>
+
+            {selectedServices.length > 0 && (
+              <div className="mt-4 border-t border-white/8 pt-4">
+                <p className="text-[10px] uppercase tracking-[0.3em] text-zinc-600">
+                  Services
+                </p>
+                <div className="mt-2 space-y-1">
+                  {selectedServices.map((s) => (
+                    <div
+                      key={s.id}
+                      className="flex items-center justify-between"
+                    >
+                      <span className="text-sm text-zinc-400">{s.name}</span>
+                      <span className="text-sm font-medium text-[#F5F2EC]">
+                        Rs. {formatPrice(s.price)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                {durationMinutes > 0 && (
+                  <div className="mt-3 flex items-center justify-between border-t border-white/8 pt-3">
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-600">
+                      Est. Duration
+                    </span>
+                    <span className="text-sm text-zinc-400">
+                      {formatDuration(durationMinutes)}
+                    </span>
+                  </div>
+                )}
+                {totalPrice > 0 && (
+                  <div className="mt-2 flex items-center justify-between">
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-600">
+                      Est. Total
+                    </span>
+                    <span className="font-medium text-[#F5F2EC]">
+                      Rs. {formatPrice(totalPrice)}
+                    </span>
+                  </div>
+                )}
               </div>
+            )}
+          </div>
 
-              <p className="text-xs uppercase tracking-[0.24em] text-zinc-500">
-                Select appointment day
-              </p>
+          {/* Trust note */}
+          <p className="mt-5 flex items-start gap-2 text-xs leading-5 text-zinc-600">
+            <Clock3 className="mt-0.5 h-3 w-3 shrink-0" />
+            All appointments are subject to confirmation. The Buff will contact
+            you within a few hours.
+          </p>
+        </div>
 
-              <h2 className="mt-2 text-2xl font-medium tracking-[-0.04em] sm:text-3xl">
-                Choose when you want to visit.
-              </h2>
+        {/* ── RIGHT PANEL: FORM FIELDS ─────────────────────────────── */}
+        <div className="space-y-12">
 
-              <p className="mt-3 text-sm leading-6 text-zinc-500">
-                Select a date and your required services. Available appointment
-                times will be calculated automatically.
-              </p>
-            </div>
+          {/* 02 — YOUR DETAILS */}
+          <div>
+            <SectionHeader number="02" title="Your Details" />
 
-            <div className="w-full overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#0B0B0B] p-2 sm:p-4">
-              <Calendar
-                mode="single"
-                selected={formData.bookingDate}
-                onSelect={handleDateChange}
-                disabled={(date) => {
-                  const normalizedDate = new Date(date);
-                  normalizedDate.setHours(0, 0, 0, 0);
-
-                  return (
-                    normalizedDate < today || normalizedDate > bookingEndDate
-                  );
-                }}
-                startMonth={today}
-                endMonth={bookingEndDate}
-                defaultMonth={formData.bookingDate ?? today}
-                captionLayout="label"
-                fixedWeeks
-                showOutsideDays
-                className="w-full rounded-none bg-transparent p-0 text-[#F5F2EC]"
-                classNames={{
-                  root: "relative w-full bg-transparent text-[#F5F2EC]",
-                  months: "w-full",
-                  month: "w-full space-y-4",
-                  month_caption:
-                    "relative flex h-10 w-full items-center justify-center",
-                  caption_label: "text-sm font-medium text-[#F5F2EC]",
-                  nav: "absolute inset-x-0 top-0 flex h-10 items-center justify-between",
-                  button_previous:
-                    "z-10 flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/3 text-zinc-300 transition hover:border-white/20 hover:bg-white/10 hover:text-white",
-                  button_next:
-                    "z-10 flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/3 text-zinc-300 transition hover:border-white/20 hover:bg-white/10 hover:text-white",
-                  month_grid: "w-full border-collapse",
-                  weekdays: "grid grid-cols-7",
-                  weekday:
-                    "flex h-9 items-center justify-center text-[11px] font-normal uppercase text-zinc-500",
-                  weeks: "space-y-1",
-                  week: "grid grid-cols-7",
-                  day: "relative flex h-10 items-center justify-center text-center text-sm sm:h-11",
-                  day_button:
-                    "flex h-9 w-9 items-center justify-center rounded-full text-sm text-[#F5F2EC] transition hover:bg-white/10",
-                  selected:
-                    "[&>button]:bg-[#F5F2EC] [&>button]:text-black [&>button:hover]:bg-white [&>button:hover]:text-black",
-                  today: "[&>button]:border [&>button]:border-white/30",
-                  outside: "text-zinc-700 opacity-40",
-                  disabled:
-                    "text-zinc-700 opacity-30 [&>button]:pointer-events-none [&>button]:cursor-not-allowed",
-                  hidden: "invisible",
-                }}
-              />
-            </div>
-
-            <div className="mt-6 rounded-[1.5rem] border border-white/10 bg-[#0B0B0B] p-5">
-              <p className="text-xs uppercase tracking-[0.22em] text-zinc-500">
-                Selected appointment
-              </p>
-
-              <p className="mt-2 text-lg font-medium text-[#F5F2EC]">
-                {formData.bookingDate
-                  ? format(formData.bookingDate, "EEEE, MMMM d, yyyy")
-                  : "No day selected"}
-              </p>
-
-              <p className="mt-1 text-sm text-zinc-500">
-                {selectedSlot?.label ?? "No time selected"}
-              </p>
-            </div>
-          </section>
-
-          {/* BOOKING DETAILS */}
-          <section className="p-4 sm:p-6 lg:p-8">
-            <div className="mb-6">
-              <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/3">
-                <Car className="h-5 w-5 text-zinc-300" />
-              </div>
-
-              <p className="text-xs uppercase tracking-[0.24em] text-zinc-500">
-                Booking details
-              </p>
-
-              <h2 className="mt-2 text-2xl font-medium tracking-[-0.04em] sm:text-3xl">
-                Tell us about the vehicle.
-              </h2>
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-2">
-              {/* NAME */}
-              <div className="sm:col-span-2">
+            <div className="space-y-4">
+              <div>
                 <Label
                   htmlFor="full-name"
-                  className="mb-2 block text-sm text-zinc-400"
+                  className="mb-2 block text-[11px] uppercase tracking-[0.22em] text-zinc-500"
                 >
-                  Full name
+                  Full Name
                 </Label>
-
                 <Input
                   id="full-name"
                   name="fullName"
@@ -291,271 +299,241 @@ export default function BookingForm() {
                   onChange={handleOnChange}
                   placeholder="Enter your full name"
                   required
-                  className="h-12 rounded-2xl border-white/10 bg-[#0B0B0B] text-[#F5F2EC] placeholder:text-zinc-700 focus-visible:ring-white/20"
+                  className="h-12 rounded-xl border-white/10 bg-[#0D0D0D] text-[#F5F2EC] placeholder:text-zinc-700 focus-visible:ring-white/15"
                 />
               </div>
 
-              {/* PHONE */}
-              <div>
-                <Label
-                  htmlFor="phone"
-                  className="mb-2 block text-sm text-zinc-400"
-                >
-                  Phone / WhatsApp
-                </Label>
-
-                <Input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  value={formData.phone}
-                  onChange={handleOnChange}
-                  placeholder="0321-0000000"
-                  required
-                  className="h-12 rounded-2xl border-white/10 bg-[#0B0B0B] text-[#F5F2EC] placeholder:text-zinc-700 focus-visible:ring-white/20"
-                />
-              </div>
-
-              {/* VEHICLE */}
-              <div>
-                <Label
-                  htmlFor="vehicle"
-                  className="mb-2 block text-sm text-zinc-400"
-                >
-                  Vehicle
-                </Label>
-
-                <Input
-                  id="vehicle"
-                  name="vehicle"
-                  value={formData.vehicle}
-                  onChange={handleOnChange}
-                  placeholder="Honda Civic, Corolla, BMW..."
-                  required
-                  className="h-12 rounded-2xl border-white/10 bg-[#0B0B0B] text-[#F5F2EC] placeholder:text-zinc-700 focus-visible:ring-white/20"
-                />
-              </div>
-
-              {/* SERVICES */}
-              <div className="sm:col-span-2">
-                <div className="mb-3 flex items-end justify-between gap-4">
-                  <div>
-                    <Label className="block text-sm text-zinc-400">
-                      Services
-                    </Label>
-
-                    <p className="mt-1 text-xs text-zinc-600">
-                      Select one or more services.
-                    </p>
-                  </div>
-
-                  {durationMinutes > 0 && (
-                    <span className="text-xs text-zinc-500">
-                      Estimated duration: {formatDuration(durationMinutes)}
-                    </span>
-                  )}
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <Label
+                    htmlFor="phone"
+                    className="mb-2 block text-[11px] uppercase tracking-[0.22em] text-zinc-500"
+                  >
+                    Phone / WhatsApp
+                  </Label>
+                  <Input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={handleOnChange}
+                    placeholder="0321-0000000"
+                    required
+                    className="h-12 rounded-xl border-white/10 bg-[#0D0D0D] text-[#F5F2EC] placeholder:text-zinc-700 focus-visible:ring-white/15"
+                  />
                 </div>
 
-                {servicesError ? (
-                  <div className="rounded-2xl border border-red-500/15 bg-red-500/5 px-5 py-4 text-sm text-red-300">
-                    {servicesError}
-                  </div>
-                ) : servicesLoading ? (
-                  <div className="flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-[#0B0B0B] px-5 py-6 text-sm text-zinc-500">
-                    <Spinner />
-                    Loading services
-                  </div>
-                ) : (
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    {services.map((service) => {
-                      const isSelected = formData.services.includes(service.id);
+                <div>
+                  <Label
+                    htmlFor="vehicle"
+                    className="mb-2 block text-[11px] uppercase tracking-[0.22em] text-zinc-500"
+                  >
+                    Vehicle
+                  </Label>
+                  <Input
+                    id="vehicle"
+                    name="vehicle"
+                    value={formData.vehicle}
+                    onChange={handleOnChange}
+                    placeholder="Honda Civic, Corolla..."
+                    required
+                    className="h-12 rounded-xl border-white/10 bg-[#0D0D0D] text-[#F5F2EC] placeholder:text-zinc-700 focus-visible:ring-white/15"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
 
-                      return (
-                        <Label
-                          key={service.id}
-                          htmlFor={service.id}
-                          className={`flex min-h-14 cursor-pointer items-center gap-3 rounded-2xl border px-4 py-3 transition ${
-                            isSelected
-                              ? "border-[#F5F2EC] bg-white/4"
-                              : "border-white/10 bg-[#0B0B0B] hover:border-white/25"
-                          }`}
-                        >
+          {/* 03 — SELECT SERVICES */}
+          <div>
+            <SectionHeader number="03" title="Select Services" />
+
+            {servicesError ? (
+              <div className="rounded-xl border border-red-500/15 bg-red-500/5 px-4 py-3 text-sm text-red-300">
+                {servicesError}
+              </div>
+            ) : servicesLoading ? (
+              <div className="flex items-center gap-3 py-8 text-sm text-zinc-500">
+                <Spinner />
+                Loading services
+              </div>
+            ) : (
+              <>
+                {/* Column headers */}
+                <div className="mb-1 flex items-center justify-between px-1">
+                  <span className="text-[10px] uppercase tracking-[0.22em] text-zinc-700">
+                    Service
+                  </span>
+                  <div className="flex items-center gap-6">
+                    <span className="text-[10px] uppercase tracking-[0.22em] text-zinc-700">
+                      Duration
+                    </span>
+                    <span className="w-20 text-right text-[10px] uppercase tracking-[0.22em] text-zinc-700">
+                      Price
+                    </span>
+                  </div>
+                </div>
+
+                {/* Service rows */}
+                <div className="divide-y divide-white/6 rounded-xl border border-white/8 bg-[#0D0D0D] overflow-hidden">
+                  {services.map((service) => {
+                    const isSelected = formData.services.includes(service.id);
+
+                    return (
+                      <Label
+                        key={service.id}
+                        htmlFor={`service-${service.id}`}
+                        className={`flex cursor-pointer items-center justify-between px-5 py-4 transition-colors ${
+                          isSelected
+                            ? "bg-white/4"
+                            : "hover:bg-white/[0.025]"
+                        }`}
+                      >
+                        <div className="flex items-center gap-4">
                           <Checkbox
-                            id={service.id}
+                            id={`service-${service.id}`}
                             checked={isSelected}
                             onCheckedChange={(checked) =>
                               handleServiceChange(service.id, checked === true)
                             }
                             className="rounded-sm border-white/20 data-[state=checked]:border-[#F5F2EC] data-[state=checked]:bg-[#F5F2EC] data-[state=checked]:text-black"
                           />
-
-                          <div className="flex flex-1 items-center justify-between gap-2">
-                            <span className="text-sm font-medium text-[#F5F2EC]">
-                              {service.name}
-                            </span>
-                            <div className="shrink-0 text-right">
-                              <p className="text-sm font-medium text-[#F5F2EC]">
-                                Rs. {formatPrice(service.price)}
-                              </p>
-                              <p className="text-xs text-zinc-500">
-                                {formatDuration(service.durationMinutes)}
-                              </p>
-                            </div>
-                          </div>
-                        </Label>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-
-              {/* TIME */}
-              <div className="sm:col-span-2">
-                <div className="mb-3">
-                  <Label className="block text-sm text-zinc-400">
-                    Available time
-                  </Label>
-
-                  <p className="mt-1 text-xs text-zinc-600">
-                    Available times are based on your selected services and
-                    existing bookings.
-                  </p>
-                </div>
-
-                {!formData.bookingDate || formData.services.length === 0 ? (
-                  <div className="rounded-2xl border border-dashed border-white/10 bg-[#0B0B0B] px-5 py-6 text-sm text-zinc-600">
-                    Select a date and at least one service to view available
-                    times.
-                  </div>
-                ) : checkingAvailability ? (
-                  <div className="flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-[#0B0B0B] px-5 py-6 text-sm text-zinc-500">
-                    <Spinner />
-                    Checking availability
-                  </div>
-                ) : availabilityError ? (
-                  <div className="rounded-2xl border border-red-500/15 bg-red-500/5 px-5 py-4 text-sm text-red-300">
-                    {availabilityError}
-                  </div>
-                ) : availableSlots.length === 0 ? (
-                  <div className="rounded-2xl border border-dashed border-white/10 bg-[#0B0B0B] px-5 py-6 text-sm text-zinc-600">
-                    No appointment times are available for this date.
-                  </div>
-                ) : (
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    {availableSlots.map((slot) => {
-                      const isSelected = formData.startTime === slot.startTime;
-
-                      return (
-                        <button
-                          key={slot.startTime}
-                          type="button"
-                          onClick={() => handleTimeChange(slot.startTime)}
-                          className={`flex min-h-14 items-center justify-between gap-3 rounded-2xl border px-4 py-3 text-left transition ${
-                            isSelected
-                              ? "border-[#F5F2EC] bg-[#F5F2EC] text-black"
-                              : "border-white/10 bg-[#0B0B0B] text-[#F5F2EC] hover:border-white/25"
-                          }`}
-                        >
-                          <span className="text-sm font-medium">
-                            {slot.label}
+                          <span
+                            className={`text-sm font-medium transition-colors ${
+                              isSelected ? "text-[#F5F2EC]" : "text-zinc-300"
+                            }`}
+                          >
+                            {service.name}
                           </span>
+                        </div>
 
-                          {isSelected && <Check className="h-4 w-4 shrink-0" />}
-                        </button>
-                      );
-                    })}
-                  </div>
+                        <div className="flex items-center gap-6">
+                          <span className="text-xs text-zinc-600">
+                            {formatDuration(service.durationMinutes)}
+                          </span>
+                          <span
+                            className={`w-20 text-right text-sm font-medium ${
+                              isSelected ? "text-[#F5F2EC]" : "text-zinc-400"
+                            }`}
+                          >
+                            Rs. {formatPrice(service.price)}
+                          </span>
+                        </div>
+                      </Label>
+                    );
+                  })}
+                </div>
+
+                {durationMinutes > 0 && (
+                  <p className="mt-3 text-right text-xs text-zinc-600">
+                    Estimated session:{" "}
+                    <span className="text-zinc-400">
+                      {formatDuration(durationMinutes)}
+                    </span>
+                  </p>
                 )}
+              </>
+            )}
+          </div>
+
+          {/* 04 — AVAILABLE TIME */}
+          <div>
+            <SectionHeader number="04" title="Available Time" />
+
+            {!formData.bookingDate || formData.services.length === 0 ? (
+              <div className="rounded-xl border border-dashed border-white/8 px-5 py-8 text-center text-sm text-zinc-600">
+                <CalendarDays className="mx-auto mb-3 h-5 w-5 opacity-40" />
+                Select a date and at least one service to view available times.
               </div>
-
-              {/* NOTES */}
-              <div className="sm:col-span-2">
-                <Label
-                  htmlFor="notes"
-                  className="mb-2 block text-sm text-zinc-400"
-                >
-                  Notes
-                </Label>
-
-                <Textarea
-                  id="notes"
-                  name="notes"
-                  value={formData.notes}
-                  onChange={handleOnChange}
-                  placeholder="Vehicle condition, preferred package, special request..."
-                  className="min-h-28 rounded-2xl border-white/10 bg-[#0B0B0B] text-[#F5F2EC] placeholder:text-zinc-700 focus-visible:ring-white/20"
-                />
+            ) : checkingAvailability ? (
+              <div className="flex items-center justify-center gap-3 rounded-xl border border-white/8 bg-[#0D0D0D] px-5 py-8 text-sm text-zinc-500">
+                <Spinner />
+                Checking availability
               </div>
-            </div>
+            ) : availabilityError ? (
+              <div className="rounded-xl border border-red-500/15 bg-red-500/5 px-4 py-3 text-sm text-red-300">
+                {availabilityError}
+              </div>
+            ) : availableSlots.length === 0 ? (
+              <div className="rounded-xl border border-dashed border-white/8 px-5 py-8 text-center text-sm text-zinc-600">
+                No available times for this date. Please choose another day.
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                {availableSlots.map((slot) => {
+                  const isSelected = formData.startTime === slot.startTime;
 
-            {/* SUMMARY */}
-            <div className="mt-8 rounded-[1.5rem] border border-white/10 bg-[#0B0B0B] p-5">
-              <p className="text-xs uppercase tracking-[0.22em] text-zinc-500">
-                Booking summary
-              </p>
+                  return (
+                    <button
+                      key={slot.startTime}
+                      type="button"
+                      onClick={() => handleTimeChange(slot.startTime)}
+                      className={`flex h-12 items-center justify-center rounded-xl border text-sm font-medium tracking-[-0.01em] transition ${
+                        isSelected
+                          ? "border-[#F5F2EC] bg-[#F5F2EC] text-black"
+                          : "border-white/8 bg-[#0D0D0D] text-zinc-300 hover:border-white/20 hover:text-[#F5F2EC]"
+                      }`}
+                    >
+                      {slot.label}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
 
-              <div className="mt-4 space-y-3 text-sm">
-                <div className="flex items-start justify-between gap-4">
-                  <span className="text-zinc-500">Date</span>
+          {/* 05 — NOTES */}
+          <div>
+            <SectionHeader number="05" title="Additional Notes" />
 
-                  <span className="text-right text-[#F5F2EC]">
-                    {formData.bookingDate
-                      ? format(formData.bookingDate, "EEEE, MMMM d, yyyy")
-                      : "No day selected"}
-                  </span>
-                </div>
+            <Textarea
+              id="notes"
+              name="notes"
+              value={formData.notes}
+              onChange={handleOnChange}
+              placeholder="Vehicle condition, special requests, preferred products..."
+              className="min-h-28 rounded-xl border-white/10 bg-[#0D0D0D] text-[#F5F2EC] placeholder:text-zinc-700 focus-visible:ring-white/15"
+            />
+          </div>
 
-                <div className="flex items-start justify-between gap-4">
-                  <span className="text-zinc-500">Time</span>
-
-                  <span className="text-right text-[#F5F2EC]">
-                    {selectedSlot?.label ?? "No time selected"}
-                  </span>
-                </div>
-
-                <div className="flex items-start justify-between gap-4">
-                  <span className="text-zinc-500">Duration</span>
-
-                  <span className="text-right text-[#F5F2EC]">
-                    {durationMinutes > 0
-                      ? formatDuration(durationMinutes)
-                      : "Not calculated"}
-                  </span>
-                </div>
-
-                <div className="flex items-start justify-between gap-4">
-                  <span className="text-zinc-500">Services</span>
-
-                  <span className="max-w-[65%] text-right text-[#F5F2EC]">
-                    {selectedServiceLabels || "No service selected"}
-                  </span>
-                </div>
-
-                <div className="border-t border-white/8 pt-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-zinc-500">Estimated total</span>
-
-                    <span className="text-lg font-medium text-[#F5F2EC]">
-                      {totalPrice > 0
-                        ? `Rs. ${formatPrice(totalPrice)}`
-                        : "Not calculated"}
+          {/* ── SUMMARY + SUBMIT ───────────────────────────────────── */}
+          <div className="border-t border-white/8 pt-8">
+            {/* Price breakdown */}
+            {selectedServices.length > 0 && (
+              <div className="mb-6 space-y-2">
+                {selectedServices.map((s) => (
+                  <div
+                    key={s.id}
+                    className="flex items-center justify-between text-sm"
+                  >
+                    <span className="text-zinc-500">{s.name}</span>
+                    <span className="text-zinc-400">
+                      Rs. {formatPrice(s.price)}
                     </span>
                   </div>
+                ))}
+                <div className="flex items-center justify-between border-t border-white/8 pt-3">
+                  <span className="text-[11px] uppercase tracking-[0.22em] text-zinc-500">
+                    Estimated total
+                  </span>
+                  <span className="text-xl font-medium tracking-[-0.02em] text-[#F5F2EC]">
+                    Rs. {formatPrice(totalPrice)}
+                  </span>
                 </div>
               </div>
-            </div>
+            )}
 
-            {/* ERROR */}
+            {/* Error */}
             {submitError && (
               <div
                 role="alert"
-                className="mt-5 rounded-2xl border border-red-500/15 bg-red-500/5 px-4 py-3 text-sm text-red-300"
+                className="mb-5 rounded-xl border border-red-500/15 bg-red-500/5 px-4 py-3 text-sm text-red-300"
               >
                 {submitError}
               </div>
             )}
 
-            {/* SUBMIT */}
+            {/* Submit */}
             <Button
               type="submit"
               disabled={
@@ -569,13 +547,13 @@ export default function BookingForm() {
                 !formData.vehicle.trim() ||
                 formData.services.length === 0
               }
-              className="mt-6 w-full cursor-pointer rounded-full bg-white text-black hover:bg-zinc-100"
+              className="h-14 w-full cursor-pointer rounded-full bg-[#F5F2EC] text-[11px] font-semibold uppercase tracking-[0.22em] text-black transition hover:bg-white disabled:opacity-40"
             >
               {loading ? (
-                <>
+                <span className="flex items-center gap-2">
                   <Spinner />
                   Submitting booking
-                </>
+                </span>
               ) : (
                 "Confirm Booking"
               )}
@@ -583,14 +561,14 @@ export default function BookingForm() {
 
             <a
               href="tel:03214012924"
-              className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/10 px-5 py-4 text-sm text-[#F5F2EC] transition hover:border-white/30"
+              className="mt-4 flex w-full items-center justify-center gap-2 rounded-full border border-white/10 py-4 text-[11px] uppercase tracking-[0.22em] text-zinc-500 transition hover:border-white/20 hover:text-zinc-300"
             >
-              <Phone className="h-4 w-4" />
+              <Phone className="h-3.5 w-3.5" />
               Prefer calling? 0321-4012924
             </a>
-          </section>
+          </div>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
   );
 }
