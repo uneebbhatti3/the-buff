@@ -1,4 +1,4 @@
-import { ArrowUpRight, Check, ChevronRight, Phone, Star } from "lucide-react";
+import { ArrowUpRight, Check, Phone, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { HeroReveal, Reveal } from "@/components/animations/reveal";
@@ -11,6 +11,7 @@ import {
   testimonialRowTwo,
 } from "@/features/home/data/data";
 import TestimonialsMarqueeRow from "@/features/home/components/testimonials-marquee-row";
+import TextMarquee from "@/features/home/components/text-marquee";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -72,7 +73,6 @@ export const metadata: Metadata = {
       en: "https://thebuffdetailing.vercel.app/",
     },
   },
-  // Schema.org structured data JSON-LD
   other: {
     "application/ld+json": JSON.stringify({
       "@context": "https://schema.org",
@@ -128,220 +128,132 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-[#0B0B0B] text-[#F5F2EC]">
-      {/* Hero */}
-      <section className="relative min-h-[92vh] overflow-hidden pt-28">
-        <div className="absolute inset-0">
-          <Image
-            src="/hero-img.jpg"
-            alt="Professional car detailing and paint polishing at The Buff"
-            fill
-            priority
-            className="object-cover"
-          />
-        </div>
 
-        <div className="absolute inset-0 bg-black/55" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.35),rgba(0,0,0,0.58),rgba(11,11,11,0.96))]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_10%,rgba(0,0,0,0.35)_100%)]" />
+      {/* ── HERO ─────────────────────────────────────────────────────── */}
+      <section className="relative min-h-[88vh] overflow-hidden">
+        {/* Background image */}
+        <Image
+          src="/hero-img.jpg"
+          alt="Professional car detailing and paint polishing at The Buff"
+          fill
+          priority
+          className="object-cover"
+        />
 
-        <div className="relative mx-auto flex min-h-[92vh] max-w-7xl items-center justify-center px-5 pb-16 md:px-8">
-          <div className="max-w-4xl text-center">
-            <HeroReveal
-              delay={0.05}
-              className="mb-8 inline-flex items-center border-l border-[#C1121F] pl-4 text-sm uppercase tracking-[0.28em] text-zinc-300"
-            >
-              Premium Car & Motorcycle Detailing
-            </HeroReveal>
+        {/* Layered overlays for cinematic depth */}
+        <div className="absolute inset-0 bg-black/50" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.1)_0%,rgba(0,0,0,0.2)_40%,rgba(11,11,11,1)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.55)_0%,transparent_65%)]" />
 
-            <HeroReveal delay={0.12}>
-              <h1 className="text-4xl font-medium leading-[1.02] tracking-[-0.06em] text-[#F5F2EC] md:text-6xl lg:text-7xl">
-                Driven by passion.
+        {/* Content — flex column filling full height */}
+        <div className="relative flex min-h-[88vh] flex-col justify-between px-5 py-10 md:px-14">
+
+          {/* Top label */}
+          <HeroReveal delay={0}>
+            <div className="flex items-center gap-3">
+              <span className="h-px w-6 bg-[#C1121F]" />
+              <p className="text-[10px] uppercase tracking-[0.38em] text-zinc-300">
+                Premium Car &amp; Motorcycle Detailing — Lahore
+              </p>
+            </div>
+          </HeroReveal>
+
+          {/* Main headline — bottom-anchored editorial style */}
+          <div>
+            <HeroReveal delay={0.1}>
+              <h1 className="text-[clamp(3.2rem,9vw,8.5rem)] font-medium leading-[0.9] tracking-[-0.05em] text-[#F5F2EC]">
+                Driven by
                 <br />
-                Perfected by precision.
+                passion.
+                <br />
+                <span className="text-[#F5F2EC]/25">Perfected</span>
+                <br />
+                <span className="text-[#F5F2EC]/25">by precision.</span>
               </h1>
             </HeroReveal>
 
+            {/* Stats + CTA bar */}
             <HeroReveal delay={0.2}>
-              <p className="mx-auto mt-8 max-w-2xl text-lg leading-8 text-zinc-300 md:text-xl">
-                The Buff restores, protects, and enhances cars and motorcycles
-                through precision detailing, paint correction, ceramic coating,
-                and interior care performed with professional techniques and
-                premium products.
-              </p>
-            </HeroReveal>
+              <div className="mt-12 flex flex-col gap-8 border-t border-white/10 pt-8 sm:flex-row sm:items-end sm:justify-between">
+                <div className="flex gap-10">
+                  <div>
+                    <p className="text-[2.2rem] font-medium leading-none tracking-[-0.04em]">
+                      5+
+                    </p>
+                    <p className="mt-2 text-[10px] uppercase tracking-[0.28em] text-zinc-500">
+                      Years
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-[2.2rem] font-medium leading-none tracking-[-0.04em]">
+                      73
+                    </p>
+                    <p className="mt-2 text-[10px] uppercase tracking-[0.28em] text-zinc-500">
+                      Google Reviews
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-[2.2rem] font-medium leading-none tracking-[-0.04em]">
+                      5.0
+                    </p>
+                    <p className="mt-2 text-[10px] uppercase tracking-[0.28em] text-zinc-500">
+                      Rating
+                    </p>
+                  </div>
+                </div>
 
-            <HeroReveal
-              delay={0.28}
-              className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
-            >
-              <Link
-                href="/booking"
-                className="inline-flex items-center justify-center gap-3 rounded-full bg-white px-7 py-4 text-sm font-semibold uppercase tracking-[0.18em] text-black transition hover:bg-white"
-              >
-                Book Appointment
-                <ChevronRight className="h-4 w-4" />
-              </Link>
-
-              <a
-                href="#services"
-                className="inline-flex items-center justify-center gap-3 rounded-full border border-white/20 px-7 py-4 text-sm font-semibold uppercase tracking-[0.18em] text-[#F5F2EC] transition hover:border-white/50 hover:bg-white/5"
-              >
-                View Services
-              </a>
-            </HeroReveal>
-
-            <HeroReveal
-              delay={0.36}
-              className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 border-y border-white/10 py-6 text-center sm:grid-cols-3"
-            >
-              <div>
-                <p className="text-2xl font-medium text-[#F5F2EC]">5+</p>
-                <p className="mt-1 text-sm text-zinc-400">
-                  Years of experience
-                </p>
-              </div>
-
-              <div className="sm:border-x sm:border-white/10 sm:px-6">
-                <p className="text-2xl font-medium text-[#F5F2EC]">73</p>
-                <p className="mt-1 text-sm text-zinc-400">Google reviews</p>
-              </div>
-
-              <div>
-                <p className="text-2xl font-medium text-[#F5F2EC]">
-                  Cars & bikes
-                </p>
-                <p className="mt-1 text-sm text-zinc-400">Detailed with care</p>
+                <div className="flex items-center gap-3">
+                  <Link
+                    href="/booking"
+                    className="rounded-full bg-[#F5F2EC] px-7 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-black transition hover:bg-white"
+                  >
+                    Book Appointment
+                  </Link>
+                  <a
+                    href="#services"
+                    className="rounded-full border border-white/20 px-7 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#F5F2EC] transition hover:border-white/40 hover:bg-white/5"
+                  >
+                    Explore
+                  </a>
+                </div>
               </div>
             </HeroReveal>
           </div>
         </div>
       </section>
 
-      {/* Intro Statement */}
-      <section className="border-y border-white/10">
-        <Reveal className="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:px-8 lg:grid-cols-[0.8fr_1.2fr]">
-          <p className="text-sm uppercase tracking-[0.28em] text-zinc-500">
-            About The Buff
-          </p>
+      {/* ── MARQUEE STRIP ───────────────────────────────────────────── */}
+      <TextMarquee />
 
-          <p className="max-w-4xl text-2xl font-light leading-[1.45] tracking-[-0.03em] text-zinc-300 md:text-4xl">
-            The Buff is built around one idea: every vehicle deserves careful,
-            honest, and precise attention. From daily drivers to motorcycles and
-            premium cars, each detail is handled with the goal of restoring
-            beauty, protecting value, and delivering a finish customers can feel
-            proud of.
-          </p>
-        </Reveal>
-      </section>
-
-      {/* Services */}
-      <section
-        id="services"
-        className="cv-auto mx-auto max-w-7xl px-5 py-24 md:px-8"
-      >
-        <Reveal className="mb-14 flex flex-col justify-between gap-6 md:flex-row md:items-end">
-          <div>
-            <p className="text-sm uppercase tracking-[0.28em] text-zinc-500">
-              Services
-            </p>
-            <h2 className="mt-4 max-w-2xl text-4xl font-medium tracking-tighter md:text-6xl">
-              Detailing services built around your vehicle&apos;s condition.
-            </h2>
-          </div>
-
-          <p className="max-w-md leading-7 text-zinc-400">
-            From premium washes and full detailing sessions to paint correction,
-            wax protection, spray coatings, and chrome care, each service is
-            selected based on the vehicle&apos;s condition and the finish you
-            want to achieve.
-          </p>
-        </Reveal>
-
-        <Reveal className="grid border-t border-white/10 md:grid-cols-2">
-          {services.map((service, index) => (
-            <div
-              key={service.title}
-              className={`group border-b border-white/10 py-8 md:p-8 ${
-                index % 2 === 0 ? "md:border-r md:border-white/10" : ""
-              }`}
-            >
-              <div className="flex items-start justify-between gap-6">
-                <div>
-                  <p className="mb-4 text-sm text-zinc-600">
-                    {String(index + 1).padStart(2, "0")}
-                  </p>
-
-                  <h3 className="text-2xl font-medium tracking-[-0.03em]">
-                    {service.title}
-                  </h3>
-
-                  <p className="mt-3 inline-flex rounded-full border border-white/10 px-3 py-1 text-xs uppercase tracking-[0.16em] text-zinc-500">
-                    {service.duration}
-                  </p>
-
-                  <p className="mt-4 max-w-xl leading-7 text-zinc-400">
-                    {service.description}
-                  </p>
-
-                  {"details" in service && service.details ? (
-                    <ul className="mt-5 space-y-2">
-                      {service.details.map((detail) => (
-                        <li
-                          key={detail}
-                          className="flex gap-2 text-sm leading-6 text-zinc-500"
-                        >
-                          <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[#C1121F]" />
-                          {detail}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
-                </div>
-
-                <ArrowUpRight className="mt-2 h-5 w-5 text-zinc-600 transition group-hover:text-[#C1121F]" />
-              </div>
-            </div>
-          ))}
-        </Reveal>
-      </section>
-
-      {/* Process */}
-      <section id="process" className="cv-auto bg-white text-black">
-        <div className="mx-auto grid max-w-7xl gap-14 px-5 py-24 md:px-8 lg:grid-cols-[0.85fr_1.15fr]">
+      {/* ── ABOUT ───────────────────────────────────────────────────── */}
+      <section className="bg-white text-[#0B0B0B]">
+        <div className="mx-auto max-w-7xl px-5 py-24 md:px-14 md:py-32">
           <Reveal>
-            <p className="text-sm uppercase tracking-[0.28em] text-zinc-500">
-              Process
+            <p className="text-[10px] uppercase tracking-[0.4em] text-zinc-400">
+              About The Buff
             </p>
 
-            <h2 className="mt-4 text-4xl font-medium tracking-tighter md:text-6xl">
-              Every detail follows a deliberate process.
-            </h2>
-          </Reveal>
-
-          <Reveal delay={0.08}>
-            <p className="max-w-2xl text-xl leading-8 text-zinc-700">
-              Great detailing is not rushed. Every vehicle is inspected,
-              cleaned, corrected, enhanced, and protected through a careful
-              sequence designed to bring out a lasting finish.
+            <p className="mt-8 max-w-5xl text-[clamp(1.55rem,3.2vw,2.85rem)] font-light leading-[1.35] tracking-[-0.03em] text-[#0B0B0B]">
+              The Buff is built around one idea: every vehicle deserves careful,
+              honest, and precise attention. From daily drivers to motorcycles
+              and premium cars, each detail is handled with the goal of restoring
+              beauty, protecting value, and delivering a finish customers can
+              feel proud of.
             </p>
 
-            <div className="mt-12 border-t border-black/10">
-              {process.map((item, index) => (
-                <div
-                  key={item}
-                  className="flex items-center justify-between border-b border-black/10 py-6"
-                >
-                  <div className="flex items-center gap-6">
-                    <span className="text-sm text-zinc-500">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-
-                    <p className="text-xl font-medium tracking-[-0.03em]">
-                      {item}
-                    </p>
-                  </div>
-
-                  <Check className="h-5 w-5 text-[#C1121F]" />
+            <div className="mt-14 grid grid-cols-3 gap-6 border-t border-black/10 pt-10 sm:max-w-sm">
+              {[
+                { value: "5+", label: "Years of experience" },
+                { value: "73", label: "5-star reviews" },
+                { value: "5.0", label: "Google rating" },
+              ].map(({ value, label }) => (
+                <div key={label}>
+                  <p className="text-4xl font-medium tracking-[-0.04em]">
+                    {value}
+                  </p>
+                  <p className="mt-2 text-[10px] uppercase tracking-[0.22em] text-zinc-400">
+                    {label}
+                  </p>
                 </div>
               ))}
             </div>
@@ -349,192 +261,316 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Packages */}
-      <section
-        id="packages"
-        className="cv-auto mx-auto max-w-7xl px-5 py-24 md:px-8"
-      >
-        <Reveal className="mb-14 max-w-2xl">
-          <p className="text-sm uppercase tracking-[0.28em] text-zinc-500">
-            Packages
-          </p>
+      {/* ── SERVICES ────────────────────────────────────────────────── */}
+      <section id="services" className="bg-[#0B0B0B]">
+        <div className="mx-auto max-w-7xl px-5 py-24 md:px-14 md:py-32">
+          <Reveal className="mb-16 flex flex-col justify-between gap-8 md:flex-row md:items-end">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.4em] text-zinc-500">
+                Services
+              </p>
+              <h2 className="mt-4 text-[clamp(2rem,5vw,4.5rem)] font-medium leading-[0.95] tracking-[-0.05em]">
+                Detailing services
+                <br />
+                built around your
+                <br />
+                vehicle&apos;s condition.
+              </h2>
+            </div>
+            <p className="max-w-xs text-sm leading-7 text-zinc-500">
+              From premium washes and full detailing sessions to paint
+              correction, wax protection, coatings, and chrome care — each
+              service is tailored to the vehicle&apos;s condition.
+            </p>
+          </Reveal>
 
-          <h2 className="mt-4 text-4xl font-medium tracking-tighter md:text-6xl">
-            Choose the level of care your vehicle needs.
-          </h2>
-        </Reveal>
+          <div className="border-t border-white/10">
+            {services.map((service, index) => (
+              <Reveal key={service.title} delay={0}>
+                <div className="group grid border-b border-white/8 py-8 transition-colors hover:bg-white/[0.025] md:grid-cols-[3.5rem_1fr_auto] md:items-start md:gap-10 md:px-5 md:py-10">
+                  <span className="mb-4 text-xs font-medium text-zinc-600 md:mb-0 md:pt-1">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
 
-        <Reveal className="grid gap-5 lg:grid-cols-3">
-          {packages.map((pkg, index) => {
-            const waMessage = encodeURIComponent(
-              `Hi! I'm interested in the *${pkg.name}* package at The Buff Detailing.\n\n${pkg.description}\n\n*What's included:*\n${pkg.items.map((item) => `• ${item}`).join("\n")}\n\nCould you tell me more about this and the pricing?`,
-            );
-            const waHref = `https://wa.me/923004196069?text=${waMessage}`;
+                  <div>
+                    <h3 className="text-xl font-medium tracking-[-0.03em] md:text-2xl">
+                      {service.title}
+                    </h3>
+                    <p className="mt-3 max-w-2xl text-sm leading-7 text-zinc-500">
+                      {service.description}
+                    </p>
+                    {"details" in service && service.details ? (
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {service.details.map((detail) => (
+                          <span
+                            key={detail}
+                            className="rounded-full border border-white/10 px-3 py-1 text-[11px] text-zinc-600"
+                          >
+                            {detail}
+                          </span>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
 
-            return (
-              <div
-                key={pkg.name}
-                className={`rounded-[1.75rem] border p-7 transition-transform duration-300 hover:-translate-y-1 ${
-                  index === 1
-                    ? "border-[#F5F2EC] bg-white text-black"
-                    : "border-white/10 bg-[#111]"
-                }`}
-              >
-                <p
-                  className={`text-sm ${
-                    index === 1 ? "text-zinc-500" : "text-zinc-600"
-                  }`}
-                >
-                  {String(index + 1).padStart(2, "0")}
-                </p>
-
-                <h3 className="mt-8 text-3xl font-medium tracking-[-0.04em]">
-                  {pkg.name}
-                </h3>
-
-                <p
-                  className={`mt-4 leading-7 ${
-                    index === 1 ? "text-zinc-700" : "text-zinc-400"
-                  }`}
-                >
-                  {pkg.description}
-                </p>
-
-                <div className="mt-8 space-y-4">
-                  {pkg.items.map((item) => (
-                    <div key={item} className="flex items-center gap-3">
-                      <Check
-                        className={`h-4 w-4 ${
-                          index === 1 ? "text-[#C1121F]" : "text-zinc-500"
-                        }`}
-                      />
-                      <span className="text-sm">{item}</span>
-                    </div>
-                  ))}
+                  <div className="mt-4 md:mt-1">
+                    <span className="inline-block rounded-full border border-white/10 px-4 py-1.5 text-[10px] uppercase tracking-[0.18em] text-zinc-500">
+                      {service.duration}
+                    </span>
+                  </div>
                 </div>
-
-                <a
-                  href={waHref}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={`mt-10 inline-flex w-full items-center justify-center rounded-full px-5 py-4 text-sm font-semibold uppercase tracking-[0.16em] transition ${
-                    index === 1
-                      ? "bg-black text-white hover:bg-[#C1121F]"
-                      : "border border-white/15 text-white hover:border-white/40"
-                  }`}
-                >
-                  Get Quote
-                </a>
-              </div>
-            );
-          })}
-        </Reveal>
+              </Reveal>
+            ))}
+          </div>
+        </div>
       </section>
 
-      {/* Gallery Placeholder */}
-      <section className="cv-auto mx-auto max-w-7xl px-5 pb-24 md:px-8">
-        <Reveal className="relative grid gap-5 md:grid-cols-3">
-          <div className="relative aspect-[3/2] w-full overflow-hidden rounded-lg md:col-span-2">
-            <Image
-              src="/portfolio-img-3.webp"
-              alt="Portfolio image 3"
-              fill
-              priority
-              className="object-cover"
-              sizes="(min-width: 768px) 66vw, 100vw"
-            />
-          </div>
+      {/* ── PROCESS ─────────────────────────────────────────────────── */}
+      <section id="process" className="bg-white text-[#0B0B0B]">
+        <div className="mx-auto max-w-7xl px-5 py-24 md:px-14 md:py-32">
+          <div className="grid gap-16 lg:grid-cols-2 lg:gap-28">
+            <Reveal>
+              <p className="text-[10px] uppercase tracking-[0.4em] text-zinc-400">
+                Process
+              </p>
+              <h2 className="mt-4 text-[clamp(2rem,4.5vw,4rem)] font-medium leading-[1.0] tracking-[-0.05em]">
+                Every detail follows a deliberate process.
+              </h2>
+              <p className="mt-6 max-w-sm text-sm leading-7 text-zinc-500">
+                Great detailing is not rushed. Every vehicle is inspected,
+                cleaned, corrected, enhanced, and protected through a careful
+                sequence designed to bring out a lasting finish.
+              </p>
+            </Reveal>
 
-          <div className="grid gap-5">
-            <div className="relative aspect-[3/2] w-full overflow-hidden rounded-lg">
-              <Image
-                src="/portfolio-img-2.webp"
-                alt="Portfolio image 2"
-                fill
-                priority
-                className="object-cover"
-                sizes="(min-width: 768px) 33vw, 100vw"
-              />
-            </div>
-            <div className="relative aspect-[3/2] w-full overflow-hidden rounded-lg">
-              <Image
-                src="/portfolio-img-1.webp"
-                alt="Portfolio image 1"
-                fill
-                priority
-                className="object-cover"
-                sizes="(min-width: 768px) 33vw, 100vw"
-              />
-            </div>
-          </div>
-        </Reveal>
-
-        <Reveal className="mt-8 flex flex-col justify-between gap-5 border-t border-white/10 pt-8 md:flex-row md:items-center">
-          <div>
-            <p className="text-sm uppercase tracking-[0.28em] text-zinc-500">
-              Before & After
-            </p>
-
-            <p className="mt-3 max-w-xl text-zinc-400">
-              See the difference through real transformations — restored paint,
-              cleaner interiors, sharper reflections, motorcycle details, and
-              protective finishes that speak for themselves.
-            </p>
-          </div>
-
-          <a
-            href="https://www.instagram.com/thebuff.detailing"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 text-sm uppercase tracking-[0.18em] text-[#F5F2EC]"
-          >
-            View Instagram
-            <ArrowUpRight className="h-4 w-4" />
-          </a>
-        </Reveal>
-      </section>
-
-      {/* Testimonials */}
-      <section
-        id="testimonials"
-        className="cv-auto overflow-hidden border-y border-white/10 bg-[#0B0B0B] py-24"
-      >
-        <Reveal className="mx-auto mb-14 flex max-w-7xl flex-col justify-between gap-6 px-5 md:px-8 lg:flex-row lg:items-end">
-          <div>
-            <p className="text-sm uppercase tracking-[0.28em] text-zinc-500">
-              Google Reviews
-            </p>
-
-            <h2 className="mt-4 max-w-3xl text-4xl font-medium tracking-tighter md:text-6xl">
-              Shining vehicles. Satisfied customers.
-            </h2>
-          </div>
-
-          <div className="max-w-md">
-            <p className="text-lg leading-8 text-zinc-400">
-              The Buff has earned the trust of car and motorcycle owners through
-              consistent craftsmanship, honest advice, premium products, and
-              results that customers continue to recommend.
-            </p>
-
-            <div className="mt-6 inline-flex items-center gap-3 rounded-full border border-white/10 px-5 py-3">
-              <div className="flex items-center gap-1">
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <Star
-                    key={index}
-                    className="h-4 w-4 fill-[#C1121F] text-[#C1121F]"
-                  />
+            <Reveal delay={0.08}>
+              <div className="border-t border-black/10">
+                {process.map((item, index) => (
+                  <div
+                    key={item}
+                    className="flex items-center justify-between border-b border-black/10 py-6"
+                  >
+                    <div className="flex items-center gap-6">
+                      <span className="w-7 text-sm text-zinc-400">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <p className="text-lg font-medium tracking-[-0.02em] md:text-xl">
+                        {item}
+                      </p>
+                    </div>
+                    <Check className="h-4 w-4 shrink-0 text-[#C1121F]" />
+                  </div>
                 ))}
               </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
 
-              <span className="text-sm font-medium text-[#F5F2EC]">
-                73 Google Reviews
-              </span>
+      {/* ── PACKAGES ────────────────────────────────────────────────── */}
+      <section id="packages" className="bg-[#0B0B0B]">
+        <div className="mx-auto max-w-7xl px-5 py-24 md:px-14 md:py-32">
+          <Reveal className="mb-16">
+            <p className="text-[10px] uppercase tracking-[0.4em] text-zinc-500">
+              Packages
+            </p>
+            <h2 className="mt-4 text-[clamp(2rem,5vw,4.5rem)] font-medium leading-[0.95] tracking-[-0.05em]">
+              Choose the level of
+              <br />
+              care your vehicle needs.
+            </h2>
+          </Reveal>
+
+          <Reveal className="grid gap-4 md:grid-cols-3">
+            {packages.map((pkg, index) => {
+              const waMessage = encodeURIComponent(
+                `Hi! I'm interested in the *${pkg.name}* package at The Buff Detailing.\n\n${pkg.description}\n\n*What's included:*\n${pkg.items.map((item) => `• ${item}`).join("\n")}\n\nCould you tell me more about this and the pricing?`,
+              );
+              const waHref = `https://wa.me/923004196069?text=${waMessage}`;
+              const isHighlighted = index === 1;
+
+              return (
+                <div
+                  key={pkg.name}
+                  className={`group relative overflow-hidden rounded-2xl border p-8 transition-transform duration-500 hover:-translate-y-1 ${
+                    isHighlighted
+                      ? "border-[#F5F2EC] bg-white text-[#0B0B0B]"
+                      : "border-white/10 bg-[#111111]"
+                  }`}
+                >
+                  {/* Ghost number decoration */}
+                  <span
+                    className={`pointer-events-none absolute -right-2 -top-4 select-none text-[7rem] font-bold leading-none tracking-[-0.05em] ${
+                      isHighlighted ? "text-black/5" : "text-white/4"
+                    }`}
+                  >
+                    {index + 1}
+                  </span>
+
+                  <p
+                    className={`text-[10px] uppercase tracking-[0.32em] ${
+                      isHighlighted ? "text-zinc-400" : "text-zinc-600"
+                    }`}
+                  >
+                    Package {String(index + 1).padStart(2, "0")}
+                  </p>
+
+                  <h3 className="mt-5 text-3xl font-medium tracking-[-0.04em]">
+                    {pkg.name}
+                  </h3>
+
+                  <p
+                    className={`mt-4 text-sm leading-7 ${
+                      isHighlighted ? "text-zinc-600" : "text-zinc-400"
+                    }`}
+                  >
+                    {pkg.description}
+                  </p>
+
+                  <ul className="mt-8 space-y-3">
+                    {pkg.items.map((item) => (
+                      <li key={item} className="flex items-center gap-3">
+                        <Check
+                          className={`h-3.5 w-3.5 shrink-0 ${
+                            isHighlighted ? "text-[#C1121F]" : "text-zinc-600"
+                          }`}
+                        />
+                        <span
+                          className={`text-sm ${
+                            isHighlighted ? "text-[#0B0B0B]" : "text-zinc-400"
+                          }`}
+                        >
+                          {item}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <a
+                    href={waHref}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={`mt-10 flex w-full items-center justify-center rounded-full py-4 text-[11px] font-semibold uppercase tracking-[0.22em] transition ${
+                      isHighlighted
+                        ? "bg-[#0B0B0B] text-white hover:bg-[#C1121F]"
+                        : "border border-white/15 text-white hover:border-white/35 hover:bg-white/5"
+                    }`}
+                  >
+                    Get Quote
+                  </a>
+                </div>
+              );
+            })}
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ── GALLERY ─────────────────────────────────────────────────── */}
+      <section className="bg-[#0B0B0B] pb-24 md:pb-32">
+        <div className="mx-auto max-w-7xl px-5 md:px-14">
+          <Reveal className="grid gap-3 md:grid-cols-[1.65fr_1fr]">
+            {/* Large image */}
+            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
+              <Image
+                src="/portfolio-img-3.webp"
+                alt="Car detailing transformation at The Buff"
+                fill
+                priority
+                className="object-cover transition duration-700 hover:scale-[1.03]"
+                sizes="(min-width: 768px) 60vw, 100vw"
+              />
+            </div>
+
+            {/* Two stacked images */}
+            <div className="grid gap-3">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
+                <Image
+                  src="/portfolio-img-2.webp"
+                  alt="Paint correction at The Buff"
+                  fill
+                  priority
+                  className="object-cover transition duration-700 hover:scale-[1.03]"
+                  sizes="(min-width: 768px) 40vw, 100vw"
+                />
+              </div>
+              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
+                <Image
+                  src="/portfolio-img-1.webp"
+                  alt="Motorcycle detailing at The Buff"
+                  fill
+                  priority
+                  className="object-cover transition duration-700 hover:scale-[1.03]"
+                  sizes="(min-width: 768px) 40vw, 100vw"
+                />
+              </div>
+            </div>
+          </Reveal>
+
+          <Reveal className="mt-6 flex flex-col justify-between gap-5 border-t border-white/8 pt-6 sm:flex-row sm:items-center">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.4em] text-zinc-500">
+                Before &amp; After
+              </p>
+              <p className="mt-2 max-w-md text-sm leading-7 text-zinc-500">
+                Real transformations — restored paint, cleaner interiors,
+                sharper reflections, and protective finishes that speak for
+                themselves.
+              </p>
+            </div>
+            <a
+              href="https://www.instagram.com/thebuff.detailing"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-[#F5F2EC] transition hover:text-[#C1121F]"
+            >
+              View Instagram
+              <ArrowUpRight className="h-3.5 w-3.5" />
+            </a>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ── TESTIMONIALS ────────────────────────────────────────────── */}
+      <section
+        id="testimonials"
+        className="overflow-hidden border-y border-white/10 bg-[#0B0B0B] py-24 md:py-32"
+      >
+        <Reveal className="mx-auto mb-14 max-w-7xl px-5 md:px-14">
+          <div className="flex flex-col justify-between gap-10 md:flex-row md:items-end">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.4em] text-zinc-500">
+                Google Reviews
+              </p>
+              <h2 className="mt-4 text-[clamp(2rem,5vw,4.5rem)] font-medium leading-[0.95] tracking-[-0.05em]">
+                Shining vehicles.
+                <br />
+                Satisfied customers.
+              </h2>
+            </div>
+
+            <div className="max-w-xs">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 px-5 py-3">
+                <div className="flex gap-0.5">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star
+                      key={i}
+                      className="h-3 w-3 fill-[#C1121F] text-[#C1121F]"
+                    />
+                  ))}
+                </div>
+                <span className="text-[11px] text-zinc-300">
+                  73 Reviews · 5.0
+                </span>
+              </div>
+              <p className="mt-4 text-sm leading-7 text-zinc-500">
+                Trusted by car and motorcycle owners through consistent
+                craftsmanship and honest advice.
+              </p>
             </div>
           </div>
         </Reveal>
 
-        <div className="space-y-5">
+        <div className="space-y-4">
           <TestimonialsMarqueeRow
             testimonials={testimonialRowOne}
             direction="left"
@@ -546,116 +582,136 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Contact */}
-      <section id="contact" className="cv-auto bg-white text-black">
-        <div className="mx-auto grid max-w-7xl gap-14 px-5 py-24 md:px-8 lg:grid-cols-[1fr_0.85fr]">
-          <Reveal>
-            <p className="text-sm uppercase tracking-[0.28em] text-zinc-500">
-              Experience The Buff
-            </p>
-
-            <h2 className="mt-4 max-w-3xl text-5xl font-medium leading-[1.03] tracking-[-0.06em] md:text-7xl">
-              Let your ride become the next transformation.
-            </h2>
-
-            <p className="mt-7 max-w-xl text-lg leading-8 text-zinc-700">
-              Whether you want to restore gloss, protect your paint, refresh the
-              interior, or detail your motorcycle, book an appointment and let
-              The Buff recommend the right treatment for your vehicle.
-            </p>
-
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-              <a
-                href="tel:03214012924"
-                className="inline-flex items-center justify-center gap-3 rounded-full bg-black px-7 py-4 text-sm font-semibold uppercase tracking-[0.16em] text-white transition hover:bg-[#C1121F]"
-              >
-                <Phone className="h-4 w-4" />
-                Call Now
-              </a>
-
-              <a
-                href="https://wa.me/923004196069"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center justify-center gap-3 rounded-full border border-black/15 px-7 py-4 text-sm font-semibold uppercase tracking-[0.16em] text-black transition hover:border-black/40"
-              >
-                WhatsApp
-                <ArrowUpRight className="h-4 w-4" />
-              </a>
-            </div>
-          </Reveal>
-
-          <Reveal
-            delay={0.08}
-            className="rounded-[2rem] border border-black/10 p-7"
-          >
-            <div className="border-b border-black/10 pb-6">
-              <p className="text-sm text-zinc-500">Phone</p>
-              <p className="mt-2 text-2xl font-medium">321 401 2924</p>
-              <p className="mt-1 text-2xl font-medium">300 419 6069</p>
-            </div>
-
-            <div className="border-b border-black/10 py-6">
-              <p className="text-sm text-zinc-500">Social</p>
-              <p className="mt-2 text-lg font-medium">
-                Facebook:{" "}
-                <a
-                  href="https://www.facebook.com/profile.php?id=100087778666789"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline"
-                >
-                  The Buff
-                </a>
+      {/* ── CONTACT ─────────────────────────────────────────────────── */}
+      <section id="contact" className="bg-white text-[#0B0B0B]">
+        <div className="mx-auto max-w-7xl px-5 py-24 md:px-14 md:py-32">
+          <div className="grid gap-14 lg:grid-cols-[1.15fr_0.85fr] lg:gap-20">
+            <Reveal>
+              <p className="text-[10px] uppercase tracking-[0.4em] text-zinc-400">
+                Experience The Buff
               </p>
-              <p className="mt-1 text-lg font-medium">
-                Instagram:{" "}
-                <a
-                  href="https://www.instagram.com/thebuff.detailing/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline"
-                >
-                  thebuff.detailing
-                </a>
+              <h2 className="mt-4 text-[clamp(2.2rem,5.5vw,5rem)] font-medium leading-[0.98] tracking-[-0.06em]">
+                Let your ride become the next transformation.
+              </h2>
+              <p className="mt-7 max-w-md text-base leading-8 text-zinc-500">
+                Whether you want to restore gloss, protect your paint, refresh
+                the interior, or detail your motorcycle — book an appointment
+                and let The Buff recommend the right treatment.
               </p>
-              <p className="mt-1 text-lg font-medium">
-                Threads:{" "}
+
+              <div className="mt-10 flex flex-wrap gap-3">
                 <a
-                  href="https://www.threads.com/@thebuff.detailing"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline"
+                  href="tel:03214012924"
+                  className="inline-flex items-center gap-2 rounded-full bg-[#0B0B0B] px-7 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-white transition hover:bg-[#C1121F]"
                 >
-                  @thebuff.detailing
+                  <Phone className="h-3.5 w-3.5" />
+                  Call Now
                 </a>
-              </p>
-            </div>
-
-            <div className="pt-6">
-              <p className="text-sm text-zinc-500">Location</p>
-
-              <div className="mt-3 overflow-hidden rounded-[1.25rem]">
-                <GoogleMapsEmbed
-                  apiKey={"AIzaSyC7HG3kfdM-_5F-Q6Wq2XyVw0SqLENMB1I"}
-                  height={400}
-                  width="100%"
-                  mode="place"
-                  center="31.458721883844095, 74.31537104394437"
-                  q="The BUFF"
-                  zoom="15"
-                />
+                <a
+                  href="https://wa.me/923004196069"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-black/15 px-7 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#0B0B0B] transition hover:border-black/40"
+                >
+                  WhatsApp
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
+                <Link
+                  href="/booking"
+                  className="inline-flex items-center gap-2 rounded-full border border-black/15 px-7 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#0B0B0B] transition hover:border-black/40"
+                >
+                  Book Online
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </Link>
               </div>
-            </div>
-          </Reveal>
+            </Reveal>
+
+            <Reveal delay={0.08}>
+              <div className="rounded-2xl border border-black/10 p-7">
+                <div className="border-b border-black/10 pb-6">
+                  <p className="text-[10px] uppercase tracking-[0.32em] text-zinc-400">
+                    Phone
+                  </p>
+                  <p className="mt-3 text-2xl font-medium tracking-[-0.03em]">
+                    321 401 2924
+                  </p>
+                  <p className="mt-1 text-2xl font-medium tracking-[-0.03em]">
+                    300 419 6069
+                  </p>
+                </div>
+
+                <div className="border-b border-black/10 py-6">
+                  <p className="text-[10px] uppercase tracking-[0.32em] text-zinc-400">
+                    Social
+                  </p>
+                  <div className="mt-3 space-y-2">
+                    <p className="text-base font-medium">
+                      Instagram:{" "}
+                      <a
+                        href="https://www.instagram.com/thebuff.detailing/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline underline-offset-2"
+                      >
+                        thebuff.detailing
+                      </a>
+                    </p>
+                    <p className="text-base font-medium">
+                      Facebook:{" "}
+                      <a
+                        href="https://www.facebook.com/profile.php?id=100087778666789"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline underline-offset-2"
+                      >
+                        The Buff
+                      </a>
+                    </p>
+                    <p className="text-base font-medium">
+                      Threads:{" "}
+                      <a
+                        href="https://www.threads.com/@thebuff.detailing"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline underline-offset-2"
+                      >
+                        @thebuff.detailing
+                      </a>
+                    </p>
+                  </div>
+                </div>
+
+                <div className="pt-6">
+                  <p className="text-[10px] uppercase tracking-[0.32em] text-zinc-400">
+                    Location
+                  </p>
+                  <div className="mt-3 overflow-hidden rounded-xl">
+                    <GoogleMapsEmbed
+                      apiKey={"AIzaSyC7HG3kfdM-_5F-Q6Wq2XyVw0SqLENMB1I"}
+                      height={320}
+                      width="100%"
+                      mode="place"
+                      center="31.458721883844095, 74.31537104394437"
+                      q="The BUFF"
+                      zoom="15"
+                    />
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+          </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="px-5 py-8 md:px-8">
-        <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 border-t border-white/10 pt-8 text-sm text-zinc-500 md:flex-row">
-          <p>© 2026 The Buff. Detailing & Beyond.</p>
-          <p>Driven by passion. Perfected by precision.</p>
+      {/* ── FOOTER ──────────────────────────────────────────────────── */}
+      <footer className="bg-[#0B0B0B] px-5 py-8 md:px-14">
+        <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row sm:items-center">
+          <p className="text-[10px] uppercase tracking-[0.28em] text-zinc-600">
+            © 2026 The Buff
+          </p>
+          <p className="text-[10px] uppercase tracking-[0.28em] text-zinc-600">
+            Driven by passion. Perfected by precision.
+          </p>
         </div>
       </footer>
     </main>
