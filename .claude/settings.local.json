@@ -4,7 +4,17 @@
       "Bash(grep -E \"\\\\.tsx$\")",
       "Bash(npx tsc:*)",
       "Bash(npm install:*)",
-      "Bash(node -e \"const {PrismaNeon} = require\\('@prisma/adapter-neon'\\); console.log\\(PrismaNeon.toString\\(\\).slice\\(0,300\\)\\)\")"
+      "Bash(node -e \"const {PrismaNeon} = require\\('@prisma/adapter-neon'\\); console.log\\(PrismaNeon.toString\\(\\).slice\\(0,300\\)\\)\")",
+      "Bash(node -e \"const l = require\\('lucide-react'\\); const keys = Object.keys\\(l\\).filter\\(k => k.toLowerCase\\(\\).includes\\('social'\\) || k.toLowerCase\\(\\).includes\\('share'\\) || k.toLowerCase\\(\\).includes\\('message'\\) || k.toLowerCase\\(\\).includes\\('globe'\\)\\); console.log\\(keys.slice\\(0,20\\)\\)\")",
+      "Bash(node -e \"const l = require\\('lucide-react'\\); const keys = Object.keys\\(l\\).filter\\(k => !k.startsWith\\('Lucide'\\) && !k.endsWith\\('Icon'\\)\\); console.log\\(keys.filter\\(k => ['Camera','Share2','Link','Rss','Tv','Radio','Wifi','Youtube','Twitch','Github','Dribbble','Figma'].some\\(s => k.includes\\(s\\)\\)\\)\\)\")",
+      "WebFetch(domain:atelierdetail.netlify.app)",
+      "Bash(curl -s \"https://atelierdetail.netlify.app/\")",
+      "Bash(curl -s \"https://atelierdetail.netlify.app/assets/index-COEA09wA.css\")",
+      "Bash(curl -s \"https://atelierdetail.netlify.app/assets/index-B_qipJ98.js\")",
+      "Bash(grep -E '\\(color|bg|text|font|hero|section|heading|service|package|button|card|#[0-9A-Fa-f]{3,6}|px-|py-|mt-|mb-|gap-|grid|flex|rounded|border|shadow\\)')",
+      "Bash(grep -oP '\"[^\"]{20,400}\"')",
+      "Bash(xargs grep:*)",
+      "Bash(git -C \"E:/Uneeb/web project/the-buff-detailing/the-buff\" status --short)"
     ]
   }
 }

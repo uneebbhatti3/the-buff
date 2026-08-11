@@ -7,10 +7,10 @@ export default function TestimonialCard({
   testimonial: Testimonial;
 }) {
   return (
-    <article className="w-[320px] shrink-0 rounded-[1.5rem] border border-white/10 bg-[#111111] p-6 transition duration-300 hover:-translate-y-1 hover:border-white/25 hover:bg-[#151515] sm:w-95">
+    <article className="w-[320px] shrink-0 rounded-[1.5rem] border border-white/10 bg-[#111111] p-6 transition duration-300 hover:-translate-y-1 hover:border-[#D4A843]/30 hover:bg-[#151515] sm:w-95">
       <div className="mb-5 flex items-center gap-1">
         {Array.from({ length: testimonial.rating }).map((_, index) => (
-          <Star key={index} className="h-4 w-4 fill-[#C1121F] text-[#C1121F]" />
+          <Star key={index} className="h-4 w-4 fill-[#D4A843] text-[#D4A843]" />
         ))}
       </div>
 

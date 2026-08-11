@@ -1,8 +1,7 @@
 import { ArrowUpRight, Check, Phone, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { HeroReveal, Reveal } from "@/components/animations/reveal";
-import { GoogleMapsEmbed } from "@next/third-parties/google";
+import { Reveal } from "@/components/animations/reveal";
 import {
   packages,
   process,
@@ -125,10 +124,12 @@ export const metadata: Metadata = {
   },
 };
 
+// All data is static — pre-render at build time, serve from CDN edge
+export const dynamic = "force-static";
+
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-[#0B0B0B] text-[#F5F2EC]">
-
       {/* ── HERO ─────────────────────────────────────────────────────── */}
       <section className="relative min-h-[88vh] overflow-hidden">
         {/* Background image */}
@@ -137,6 +138,8 @@ export default function HomePage() {
           alt="Professional car detailing and paint polishing at The Buff"
           fill
           priority
+          quality={75}
+          sizes="100vw"
           className="object-cover"
         />
 
@@ -147,77 +150,70 @@ export default function HomePage() {
 
         {/* Content — flex column filling full height */}
         <div className="relative flex min-h-[88vh] flex-col justify-between px-5 py-10 md:px-14">
+          {/* Top label — CSS animation so it's visible before JS hydration */}
+          <div className="flex items-center gap-3 animate-[fadeUp_0.6s_ease-out_both]">
+            <span className="h-px w-6 bg-[#C1121F]" />
+            <p className="text-[10px] uppercase tracking-[0.38em] text-zinc-300">
+              Premium Car &amp; Motorcycle Detailing — Lahore
+            </p>
+          </div>
 
-          {/* Top label */}
-          <HeroReveal delay={0}>
-            <div className="flex items-center gap-3">
-              <span className="h-px w-6 bg-[#C1121F]" />
-              <p className="text-[10px] uppercase tracking-[0.38em] text-zinc-300">
-                Premium Car &amp; Motorcycle Detailing — Lahore
-              </p>
-            </div>
-          </HeroReveal>
-
-          {/* Main headline — bottom-anchored editorial style */}
+          {/* Main headline — rendered immediately for LCP */}
           <div>
-            <HeroReveal delay={0.1}>
-              <h1 className="text-[clamp(3.2rem,9vw,8.5rem)] font-medium leading-[0.9] tracking-[-0.05em] text-[#F5F2EC]">
-                Driven by
-                <br />
-                passion.
-                <br />
-                <span className="text-[#F5F2EC]/25">Perfected</span>
-                <br />
-                <span className="text-[#F5F2EC]/25">by precision.</span>
-              </h1>
-            </HeroReveal>
+            <h1 className="text-[clamp(3.2rem,9vw,8.5rem)] font-medium leading-[0.9] tracking-tighter text-[#F5F2EC] animate-[fadeUp_0.5s_ease-out_both]">
+              Driven by
+              <br />
+              passion.
+              <br />
+              <span className="text-[#F5F2EC]/25">Perfected</span>
+              <br />
+              <span className="text-[#F5F2EC]/25">by precision.</span>
+            </h1>
 
             {/* Stats + CTA bar */}
-            <HeroReveal delay={0.2}>
-              <div className="mt-12 flex flex-col gap-8 border-t border-white/10 pt-8 sm:flex-row sm:items-end sm:justify-between">
-                <div className="flex gap-10">
-                  <div>
-                    <p className="text-[2.2rem] font-medium leading-none tracking-[-0.04em]">
-                      5+
-                    </p>
-                    <p className="mt-2 text-[10px] uppercase tracking-[0.28em] text-zinc-500">
-                      Years
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-[2.2rem] font-medium leading-none tracking-[-0.04em]">
-                      73
-                    </p>
-                    <p className="mt-2 text-[10px] uppercase tracking-[0.28em] text-zinc-500">
-                      Google Reviews
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-[2.2rem] font-medium leading-none tracking-[-0.04em]">
-                      5.0
-                    </p>
-                    <p className="mt-2 text-[10px] uppercase tracking-[0.28em] text-zinc-500">
-                      Rating
-                    </p>
-                  </div>
+            <div className="mt-12 flex flex-col gap-8 border-t border-white/10 pt-8 sm:flex-row sm:items-end sm:justify-between animate-[fadeUp_0.5s_0.15s_ease-out_both]">
+              <div className="flex gap-10">
+                <div>
+                  <p className="text-[2.2rem] font-medium leading-none tracking-[-0.04em]">
+                    5+
+                  </p>
+                  <p className="mt-2 text-[10px] uppercase tracking-[0.28em] text-zinc-500">
+                    Years
+                  </p>
                 </div>
-
-                <div className="flex items-center gap-3">
-                  <Link
-                    href="/booking"
-                    className="rounded-full bg-[#F5F2EC] px-7 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-black transition hover:bg-white"
-                  >
-                    Book Appointment
-                  </Link>
-                  <a
-                    href="#services"
-                    className="rounded-full border border-white/20 px-7 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#F5F2EC] transition hover:border-white/40 hover:bg-white/5"
-                  >
-                    Explore
-                  </a>
+                <div>
+                  <p className="text-[2.2rem] font-medium leading-none tracking-[-0.04em]">
+                    73
+                  </p>
+                  <p className="mt-2 text-[10px] uppercase tracking-[0.28em] text-zinc-500">
+                    Google Reviews
+                  </p>
+                </div>
+                <div>
+                  <p className="text-[2.2rem] font-medium leading-none tracking-[-0.04em]">
+                    5.0
+                  </p>
+                  <p className="mt-2 text-[10px] uppercase tracking-[0.28em] text-zinc-500">
+                    Rating
+                  </p>
                 </div>
               </div>
-            </HeroReveal>
+
+              <div className="flex items-center gap-3">
+                <Link
+                  href="/booking"
+                  className="rounded-full bg-[#F5F2EC] px-7 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-black transition hover:bg-white"
+                >
+                  Book Appointment
+                </Link>
+                <a
+                  href="#services"
+                  className="rounded-full border border-white/20 px-7 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#F5F2EC] transition hover:border-white/40 hover:bg-white/5"
+                >
+                  Explore
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -236,9 +232,9 @@ export default function HomePage() {
             <p className="mt-8 max-w-5xl text-[clamp(1.55rem,3.2vw,2.85rem)] font-light leading-[1.35] tracking-[-0.03em] text-[#0B0B0B]">
               The Buff is built around one idea: every vehicle deserves careful,
               honest, and precise attention. From daily drivers to motorcycles
-              and premium cars, each detail is handled with the goal of restoring
-              beauty, protecting value, and delivering a finish customers can
-              feel proud of.
+              and premium cars, each detail is handled with the goal of
+              restoring beauty, protecting value, and delivering a finish
+              customers can feel proud of.
             </p>
 
             <div className="mt-14 grid grid-cols-3 gap-6 border-t border-black/10 pt-10 sm:max-w-sm">
@@ -269,7 +265,7 @@ export default function HomePage() {
               <p className="text-[10px] uppercase tracking-[0.4em] text-zinc-500">
                 Services
               </p>
-              <h2 className="mt-4 text-[clamp(2rem,5vw,4.5rem)] font-medium leading-[0.95] tracking-[-0.05em]">
+              <h2 className="mt-4 text-[clamp(2rem,5vw,4.5rem)] font-medium leading-[0.95] tracking-tighter">
                 Detailing services
                 <br />
                 built around your
@@ -287,7 +283,7 @@ export default function HomePage() {
           <div className="border-t border-white/10">
             {services.map((service, index) => (
               <Reveal key={service.title} delay={0}>
-                <div className="group grid border-b border-white/8 py-8 transition-colors hover:bg-white/[0.025] md:grid-cols-[3.5rem_1fr_auto] md:items-start md:gap-10 md:px-5 md:py-10">
+                <div className="group grid border-b border-white/8 py-8 transition-colors hover:bg-white/2.5 md:grid-cols-[3.5rem_1fr_auto] md:items-start md:gap-10 md:px-5 md:py-10">
                   <span className="mb-4 text-xs font-medium text-zinc-600 md:mb-0 md:pt-1">
                     {String(index + 1).padStart(2, "0")}
                   </span>
@@ -333,7 +329,7 @@ export default function HomePage() {
               <p className="text-[10px] uppercase tracking-[0.4em] text-zinc-400">
                 Process
               </p>
-              <h2 className="mt-4 text-[clamp(2rem,4.5vw,4rem)] font-medium leading-[1.0] tracking-[-0.05em]">
+              <h2 className="mt-4 text-[clamp(2rem,4.5vw,4rem)] font-medium leading-none tracking-tighter">
                 Every detail follows a deliberate process.
               </h2>
               <p className="mt-6 max-w-sm text-sm leading-7 text-zinc-500">
@@ -374,7 +370,7 @@ export default function HomePage() {
             <p className="text-[10px] uppercase tracking-[0.4em] text-zinc-500">
               Packages
             </p>
-            <h2 className="mt-4 text-[clamp(2rem,5vw,4.5rem)] font-medium leading-[0.95] tracking-[-0.05em]">
+            <h2 className="mt-4 text-[clamp(2rem,5vw,4.5rem)] font-medium leading-[0.95] tracking-tighter">
               Choose the level of
               <br />
               care your vehicle needs.
@@ -400,7 +396,7 @@ export default function HomePage() {
                 >
                   {/* Ghost number decoration */}
                   <span
-                    className={`pointer-events-none absolute -right-2 -top-4 select-none text-[7rem] font-bold leading-none tracking-[-0.05em] ${
+                    className={`pointer-events-none absolute -right-2 -top-4 select-none text-[7rem] font-bold leading-none tracking-tighter ${
                       isHighlighted ? "text-black/5" : "text-white/4"
                     }`}
                   >
@@ -470,7 +466,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-5 md:px-14">
           <Reveal className="grid gap-3 md:grid-cols-[1.65fr_1fr]">
             {/* Large image */}
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
+            <div className="relative aspect-4/3 overflow-hidden rounded-2xl">
               <Image
                 src="/portfolio-img-3.webp"
                 alt="Car detailing transformation at The Buff"
@@ -483,7 +479,7 @@ export default function HomePage() {
 
             {/* Two stacked images */}
             <div className="grid gap-3">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
+              <div className="relative aspect-4/3 overflow-hidden rounded-2xl">
                 <Image
                   src="/portfolio-img-2.webp"
                   alt="Paint correction at The Buff"
@@ -493,7 +489,7 @@ export default function HomePage() {
                   sizes="(min-width: 768px) 40vw, 100vw"
                 />
               </div>
-              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
+              <div className="relative aspect-4/3 overflow-hidden rounded-2xl">
                 <Image
                   src="/portfolio-img-1.webp"
                   alt="Motorcycle detailing at The Buff"
@@ -541,7 +537,7 @@ export default function HomePage() {
               <p className="text-[10px] uppercase tracking-[0.4em] text-zinc-500">
                 Google Reviews
               </p>
-              <h2 className="mt-4 text-[clamp(2rem,5vw,4.5rem)] font-medium leading-[0.95] tracking-[-0.05em]">
+              <h2 className="mt-4 text-[clamp(2rem,5vw,4.5rem)] font-medium leading-[0.95] tracking-tighter">
                 Shining vehicles.
                 <br />
                 Satisfied customers.
@@ -686,14 +682,15 @@ export default function HomePage() {
                     Location
                   </p>
                   <div className="mt-3 overflow-hidden rounded-xl">
-                    <GoogleMapsEmbed
-                      apiKey={"AIzaSyC7HG3kfdM-_5F-Q6Wq2XyVw0SqLENMB1I"}
-                      height={320}
+                    <iframe
+                      src="https://www.google.com/maps/embed/v1/place?key=AIzaSyC7HG3kfdM-_5F-Q6Wq2XyVw0SqLENMB1I&q=The+BUFF&center=31.458721883844095,74.31537104394437&zoom=15"
                       width="100%"
-                      mode="place"
-                      center="31.458721883844095, 74.31537104394437"
-                      q="The BUFF"
-                      zoom="15"
+                      height="320"
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      className="border-0"
+                      allowFullScreen
+                      title="The Buff location on Google Maps"
                     />
                   </div>
                 </div>

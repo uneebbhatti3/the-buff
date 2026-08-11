@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpRight, Menu, Phone, X } from "lucide-react";
+import { ArrowUpRight, Menu, MessageCircle, Phone, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -38,7 +38,7 @@ export default function Header() {
             <Link
               key={item.href}
               href={item.href}
-              className="relative transition hover:text-[#F5F2EC]"
+              className="relative transition hover:text-[#F5F2EC] after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-[#C1121F] after:transition-all hover:after:w-full"
             >
               {item.label}
             </Link>
@@ -46,18 +46,27 @@ export default function Header() {
         </nav>
 
         {/* Desktop Actions */}
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden items-center gap-2 md:flex">
           <a
             href="tel:03214012924"
-            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 text-[#F5F2EC] transition hover:border-white/30 hover:bg-white/5"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-zinc-400 transition hover:border-white/30 hover:bg-white/5 hover:text-[#F5F2EC]"
             aria-label="Call The Buff"
           >
             <Phone className="h-4 w-4" />
           </a>
+          <a
+            href="https://wa.me/923004196069"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-zinc-400 transition hover:border-[#C1121F]/30 hover:bg-[#C1121F]/5 hover:text-[#C1121F]"
+            aria-label="WhatsApp The Buff"
+          >
+            <MessageCircle className="h-4 w-4" />
+          </a>
 
           <Link
             href="/booking"
-            className="inline-flex items-center gap-2 rounded-full bg-[#F5F2EC] px-5 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-black transition hover:bg-white"
+            className="inline-flex items-center gap-2 rounded-full bg-[#C1121F] px-5 py-2.5 text-sm font-semibold uppercase tracking-[0.16em] text-white transition hover:bg-[#a50f18]"
           >
             Book Now
             <ArrowUpRight className="h-4 w-4" />
@@ -93,17 +102,29 @@ export default function Header() {
             <Link
               href="/booking"
               onClick={() => setOpen(false)}
-              className="mt-2 rounded-2xl bg-[#F5F2EC] px-4 py-3 text-center text-sm font-semibold uppercase tracking-[0.16em] text-black"
+              className="mt-2 rounded-2xl bg-[#C1121F] px-4 py-3 text-center text-sm font-semibold uppercase tracking-[0.16em] text-white"
             >
               Book Appointment
             </Link>
 
-            <a
-              href="tel:03214012924"
-              className="rounded-2xl border border-white/10 px-4 py-3 text-center text-sm text-[#F5F2EC]"
-            >
-              Call 0321-4012924
-            </a>
+            <div className="grid grid-cols-2 gap-2">
+              <a
+                href="https://wa.me/923004196069"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center justify-center gap-2 rounded-2xl border border-[#C1121F]/20 bg-[#C1121F]/5 px-4 py-3 text-center text-sm text-[#C1121F]"
+              >
+                <MessageCircle className="h-4 w-4" />
+                WhatsApp
+              </a>
+              <a
+                href="tel:03214012924"
+                className="flex items-center justify-center gap-2 rounded-2xl border border-white/10 px-4 py-3 text-center text-sm text-[#F5F2EC]"
+              >
+                <Phone className="h-4 w-4" />
+                Call Us
+              </a>
+            </div>
           </nav>
         </div>
       )}
