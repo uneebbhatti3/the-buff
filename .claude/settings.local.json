@@ -14,7 +14,8 @@
       "Bash(grep -E '\\(color|bg|text|font|hero|section|heading|service|package|button|card|#[0-9A-Fa-f]{3,6}|px-|py-|mt-|mb-|gap-|grid|flex|rounded|border|shadow\\)')",
       "Bash(grep -oP '\"[^\"]{20,400}\"')",
       "Bash(xargs grep:*)",
-      "Bash(git -C \"E:/Uneeb/web project/the-buff-detailing/the-buff\" status --short)"
+      "Bash(git -C \"E:/Uneeb/web project/the-buff-detailing/the-buff\" status --short)",
+      "Bash(echo \"EXIT:$?\")"
     ]
   }
 }

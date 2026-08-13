@@ -24,6 +24,33 @@ export default function BookingHoursForm() {
     DEFAULT_BUSINESS_HOURS,
   );
   const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    axios
+      .get<{ success: boolean; data: { weekday: string; open: string; close: string; closed: boolean }[] }>(
+        "/api/admin/business-hours",
+      )
+      .then(({ data }) => {
+        if (data.success && data.data.length > 0) {
+          const loaded: BusinessHoursRecord = { ...DEFAULT_BUSINESS_HOURS };
+          for (const entry of data.data) {
+            const day =
+              entry.weekday.charAt(0) + entry.weekday.slice(1).toLowerCase();
+            loaded[day] = {
+              open: entry.open,
+              close: entry.close,
+              closed: entry.closed,
+            };
+          }
+          setHours(loaded);
+        }
+      })
+      .catch(() => {
+        toast.error("Failed to load existing hours.");
+      })
+      .finally(() => setIsLoading(false));
+  }, []);
 
   const openDaysCount = useMemo(
     () => WEEKDAYS.filter((day) => !hours[day].closed).length,
@@ -100,7 +127,7 @@ export default function BookingHoursForm() {
         </div>
       </CardHeader>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} aria-disabled={isLoading}>
         <CardContent className="space-y-4 pt-6">
           <div className="rounded-lg bg-muted/50 px-4 py-3 text-sm text-muted-foreground">
             <span className="font-medium text-foreground">{openDaysCount}</span>{" "}
@@ -138,7 +165,7 @@ export default function BookingHoursForm() {
           </p>
           <Button
             type="submit"
-            disabled={isSaving}
+            disabled={isSaving || isLoading}
             className="w-full sm:w-auto"
           >
             <Save className="size-4" />

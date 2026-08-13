@@ -15,8 +15,8 @@ export type Weekday = (typeof WEEKDAYS)[number];
 export const DEFAULT_BUSINESS_HOURS: BusinessHoursRecord = WEEKDAYS.reduce(
   (acc, day) => {
     acc[day] = {
-      open: "00:00",
-      close: "23:59",
+      open: "09:00",
+      close: "17:00",
       closed: false,
     };
     return acc;

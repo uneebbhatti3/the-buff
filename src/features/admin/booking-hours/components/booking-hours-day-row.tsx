@@ -54,9 +54,6 @@ export default function BookingHoursDayRow({
         <Input
           id={`${day}-open`}
           type="time"
-          min="00:00"
-          max="23:59"
-          step="60"
           value={hours.open}
           onChange={(event) => onTimeChange("open", event.target.value)}
           disabled={hours.closed}
@@ -71,9 +68,6 @@ export default function BookingHoursDayRow({
         <Input
           id={`${day}-close`}
           type="time"
-          min="00:00"
-          max="23:59"
-          step="60"
           value={hours.close}
           onChange={(event) => onTimeChange("close", event.target.value)}
           disabled={hours.closed}
